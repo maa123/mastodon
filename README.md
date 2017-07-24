@@ -10,7 +10,7 @@ https://mstdn.kemono-friends.info
 初期アバターは [とろねこ](https://mstdn.kemono-friends.info/@Atelier_toro)さんに描いて頂きました。
 
 
-Mastodon
+![Mastodon](https://i.imgur.com/NhZc40l.png)
 ========
 
 [![Build Status](http://img.shields.io/travis/tootsuite/mastodon.svg)][travis]
