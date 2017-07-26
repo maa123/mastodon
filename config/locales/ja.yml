@@ -2,8 +2,7 @@
 ja:
   about:
     about_mastodon_html: Mastodon は、オープンなウェブプロトコルを採用した、自由でオープンソースなソーシャルネットワークです。電子メールのような分散型の仕組みを採っています。
-    about_this: このインスタンスについて
-    business_email: 'ビジネスメールアドレス:'
+    about_this: 詳細情報
     closed_registrations: 現在このインスタンスでの新規登録は受け付けていません。しかし、他のインスタンスにアカウントを作成しても全く同じネットワークに参加することができます。
     contact: 連絡先
     description_headline: "%{domain} とは？"
@@ -20,18 +19,14 @@ ja:
       within_reach_title: いつでも身近に
     find_another_instance: 他のインスタンスを探す
     generic_description: "%{domain} は、Mastodon インスタンスの一つです。"
-    get_started: 参加する
     hosted_on: Mastodon hosted on %{domain}
     learn_more: もっと詳しく
-    links: リンク
     other_instances: 他のインスタンス
     source_code: ソースコード
     status_count_after: がおー
     status_count_before: がおー数
-    terms: プライバシーポリシー
     user_count_after: 人
     user_count_before: フレンズ数
-    version: バージョン
     what_is_mastodon: Mastodon とは？
   accounts:
     follow: 狩りごっこ
@@ -91,7 +86,7 @@ ja:
         report: レポート
         targeted_reports: このアカウントについてのレポート
       silence: サイレンス
-      statuses: トゥート数
+      statuses: がおー数
       subscribe: 購読する
       title: アカウント
       undo_silenced: サイレンスから戻す
@@ -108,7 +103,7 @@ ja:
         create: ブロックを作成
         hint: ドメインブロックはデータベース中のアカウント項目の作成を妨げませんが、遡って自動的に指定されたモデレーションをそれらのアカウントに適用します。
         severity:
-          desc_html: "<strong>サイレンス</strong>はアカウントのトゥートをフォローしていない人から隠します。<strong>停止</strong>はそのアカウントのコンテンツ、メディア、プロフィールデータをすべて削除します。"
+          desc_html: "<strong>サイレンス</strong>はアカウントのがおーをフォローしていない人から隠します。<strong>停止</strong>はそのアカウントのコンテンツ、メディア、プロフィールデータをすべて削除します。"
           silence: サイレンス
           suspend: 停止
         title: 新規ドメインブロック
@@ -198,7 +193,7 @@ ja:
         show: メディアを表示
         title: メディア
       no_media: メディアなし
-      title: トゥート一覧
+      title: がおー一覧
       with_media: メディアあり
     subscriptions:
       callback_url: コールバックURL
@@ -323,8 +318,8 @@ ja:
         one: "新しい1件の通知 \U0001F418"
         other: "新しい%{count}件の通知 \U0001F418"
     favourite:
-      body: 'あなたのトゥートが %{name} さんにお気に入り登録されました:'
-      subject: "%{name} さんがあなたのトゥートをお気に入りに登録しました"
+      body: 'あなたのがおーが %{name} さんにお気に入り登録されました:'
+      subject: "%{name} さんがあなたのがおーをお気に入りに登録しました"
     follow:
       body: "%{name} さんにフォローされています"
       subject: "%{name} さんにフォローされています"
@@ -335,15 +330,15 @@ ja:
       body: "%{name} さんから返信がありました:"
       subject: "%{name} さんに返信されました"
     reblog:
-      body: 'あなたのトゥートが %{name} さんにブーストされました:'
-      subject: あなたのトゥートが %{name} さんにブーストされました
+      body: 'あなたのがおーが %{name} さんにブーストされました:'
+      subject: あなたのがおーが %{name} さんにブーストされました
   pagination:
     next: 次
     prev: 前
     truncate: "&hellip;"
   push_notifications:
     favourite:
-      title: あなたのトゥートが %{name} さんにお気に入り登録されました
+      title: あなたのがおーが %{name} さんにお気に入り登録されました
     follow:
       title: "%{name} さんにフォローされました"
     mention:
@@ -352,7 +347,7 @@ ja:
       action_favourite: お気に入り
       title: "%{name} さんから返信がありました"
     reblog:
-      title: あなたのトゥートが %{name} さんにブーストされました
+      title: あなたのがおーが %{name} さんにブーストされました
     subscribed:
       body: あなたはプッシュ通知を受け取ることが出来ます
       title: Subscription が登録されました
@@ -400,7 +395,7 @@ ja:
     title: セッション
   settings:
     authorized_apps: 認証済みアプリ
-    back: 戻る
+    back: Mastodon に戻る
     delete: アカウントの削除
     edit_profile: プロフィールを編集
     export: データのエクスポート
