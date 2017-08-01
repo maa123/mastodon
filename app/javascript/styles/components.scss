@@ -466,10 +466,6 @@
   overflow: hidden;
   white-space: pre-wrap;
 
-  &:focus {
-    outline: rgba($ui-highlight-color, 0.7) solid 2px;
-  }
-
   .emojione {
     width: 18px;
     height: 18px;
@@ -569,12 +565,6 @@
     .icon-button.disabled {
       color: lighten($ui-base-color, 16%);
     }
-  }
-
-  &:focus,
-  &.status-direct:focus {
-    outline: 0;
-    background-color: lighten($ui-base-color, 10%);
   }
 
   &.light {
@@ -3499,7 +3489,7 @@ button.icon-button.active i.fa-retweet {
 }
 
 .confirmation-modal {
-  max-width: 280px;
+  max-width: 85vw;
 
   @media screen and (min-width: 480px) {
     max-width: 380px;
