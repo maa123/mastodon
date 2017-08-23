@@ -68,7 +68,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
   def process_mention(tag, status)
     account = account_from_uri(tag['href'])
-    account = ActivityPub::FetchRemoteAccountService.new.call(tag['href']) if account.nil?
+    account = FetchRemoteAccountService.new.call(tag['href']) if account.nil?
     return if account.nil?
     account.mentions.create(status: status)
   end
@@ -91,7 +91,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
   def resolve_thread(status)
     return unless status.reply? && status.thread.nil?
-    ActivityPub::ThreadResolveWorker.perform_async(status.id, @object['inReplyTo'])
+    ThreadResolveWorker.perform_async(status.id, @object['inReplyTo'])
   end
 
   def conversation_from_uri(uri)
