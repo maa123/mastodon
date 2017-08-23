@@ -40,8 +40,8 @@ ja:
     nothing_here: 何もありません
     people_followed_by: "%{name} さんがフォロー中のアカウント"
     people_who_follow: "%{name} さんをフォロー中のアカウント"
-    posts: トゥート
-    posts_with_replies: トゥートと返信
+    posts: がおー
+    posts_with_replies: がおーと返信
     media: メディア
     roles:
       admin: Admin
@@ -328,8 +328,8 @@ ja:
         one: "新しい1件の通知 \U0001F418"
         other: "新しい%{count}件の通知 \U0001F418"
     favourite:
-      body: 'あなたのがおーが %{name} さんにお気に入り登録されました:'
-      subject: "%{name} さんがあなたのがおーをお気に入りに登録しました"
+      body: 'あなたのがおーが %{name} さんにすごーいされました:'
+      subject: "%{name} さんがあなたのがおーをすごーいしました"
     follow:
       body: "%{name} さんにフォローされています"
       subject: "%{name} さんにフォローされています"
@@ -340,26 +340,26 @@ ja:
       body: "%{name} さんから返信がありました:"
       subject: "%{name} さんに返信されました"
     reblog:
-      body: 'あなたのがおーが %{name} さんにブーストされました:'
-      subject: あなたのがおーが %{name} さんにブーストされました
+      body: 'あなたのがおーが %{name} さんにたーのしーされました:'
+      subject: あなたのがおーが %{name} さんにたーのしーされました
   pagination:
     next: 次
     prev: 前
     truncate: "&hellip;"
   push_notifications:
     favourite:
-      title: あなたのがおーが %{name} さんにお気に入り登録されました
+      title: あなたのがおーが %{name} さんにすごーい登録されました
     follow:
       title: "%{name} さんにフォローされました"
     group:
       title: "%{count} 件の通知"
     mention:
-      action_boost: ブースト
+      action_boost: たーのしー
       action_expand: もっと見る
-      action_favourite: お気に入り
+      action_favourite: すごーい
       title: "%{name} さんから返信がありました"
     reblog:
-      title: あなたのがおーが %{name} さんにブーストされました
+      title: あなたのがおーが %{name} さんにたーのしーされました
     subscribed:
       body: あなたはプッシュ通知を受け取ることが出来ます
       title: Subscription が登録されました
@@ -431,7 +431,7 @@ ja:
       unlisted_long: 誰でも見ることができますが、公開タイムラインには表示されません
   stream_entries:
     click_to_show: クリックして表示
-    reblogged: さんにブーストされました
+    reblogged: さんにたーのしーされました
     sensitive_content: 閲覧注意
   terms:
     body_html: |
