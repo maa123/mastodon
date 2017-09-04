@@ -290,7 +290,7 @@ ja:
       content: セキュリティ認証に失敗しました。Cookieをブロックしていませんか？
       title: セキュリティ認証に失敗
     '429': リクエストの制限に達しました。
-    noscript: Mastodonのウェブアプリケーションを利用する場合はJavaScriptを有効にしてください。またはあなたのプラットフォーム向けのMastodonネイティブアプリを探すことができます。
+    noscript_html: Mastodonのウェブアプリケーションを利用する場合はJavaScriptを有効にしてください。またはあなたのプラットフォーム向けの<a href="https://github.com/tootsuite/documentation/blob/master/Using-Mastodon/Apps.md">Mastodonネイティブアプリ</a>を探すことができます。
   exports:
     blocks: ブロック
     csv: CSV
@@ -355,6 +355,17 @@ ja:
     reblog:
       body: 'あなたのがおーが %{name} さんにたーのしーされました:'
       subject: あなたのがおーが %{name} さんにたーのしーされました
+  number:
+    human:
+      decimal_units:
+        format: "%n%u"
+        units:
+          billion: B
+          million: M
+          quadrillion: Q
+          thousand: K
+          trillion: T
+          unit: ''
   pagination:
     next: 次
     prev: 前
@@ -373,9 +384,6 @@ ja:
       title: "%{name} さんから返信がありました"
     reblog:
       title: あなたのがおーが %{name} さんにたーのしーされました
-    subscribed:
-      body: あなたはプッシュ通知を受け取ることが出来ます
-      title: Subscription が登録されました
   remote_follow:
     acct: あなたの ユーザー名@ドメイン を入力してください
     missing_resource: リダイレクト先が見つかりませんでした
@@ -436,6 +444,10 @@ ja:
   statuses:
     open_in_web: Webで開く
     over_character_limit: 上限は %{max}文字までです
+    pin_errors:
+      ownership: 他人のトゥートを固定することはできません
+      private: 非公開のトゥートを固定することはできません
+      reblog: ブーストされたトゥートを固定することはできません
     show_more: もっと見る
     visibilities:
       private: 非公開
@@ -446,6 +458,7 @@ ja:
       unlisted_long: 誰でも見ることができますが、公開タイムラインには表示されません
   stream_entries:
     click_to_show: クリックして表示
+    pinned: 固定されたがおー
     reblogged: さんにたーのしーされました
     sensitive_content: 閲覧注意
   terms:
