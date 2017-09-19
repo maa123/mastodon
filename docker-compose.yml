@@ -1,19 +1,19 @@
 version: '2'
 services:
 
-  db:
-    restart: always
-    image: postgres:alpine
+##  db:
+#    restart: always
+#    image: postgres:alpine
 ### Uncomment to enable DB persistance
-    volumes:
-      - ./../../home/mastodon/postgresql/data:/var/lib/postgresql/data
+#    volumes:
+#      - ./../../home/mastodon/postgresql/data:/var/lib/postgresql/data
 
-  redis:
-    restart: always
-    image: redis:alpine
+#  redis:
+#    restart: always
+#    image: redis:alpine
 ### Uncomment to enable REDIS persistance
-    volumes:
-      - ./redis:/data
+#    volumes:
+#      - ./redis:/data
 
   web:
     build: .
@@ -23,9 +23,9 @@ services:
     command: bundle exec rails s -p 3000 -b '0.0.0.0'
     ports:
       - "3000:3000"
-    depends_on:
-      - db
-      - redis
+#    depends_on:
+#      - db
+#      - redis
     volumes:
       - ./public/assets:/mastodon/public/assets
       - ./public/packs:/mastodon/public/packs
@@ -39,19 +39,19 @@ services:
     command: npm run start
     ports:
       - "4000:4000"
-    depends_on:
-      - db
-      - redis
+#    depends_on:
+#      - db
+#      - redis
 
   sidekiq1:
     build: .
     image: gargron/mastodon
     restart: always
     env_file: .env.production
-    command: bundle exec sidekiq -c 40 -q default 
-    depends_on:
-      - db
-      - redis
+    command: bundle exec sidekiq -c 50 -q default 
+#    depends_on:
+#      - db
+#      - redis
     volumes:
       - ./public/system:/mastodon/public/system
 
@@ -61,9 +61,9 @@ services:
     image: gargron/mastodon
     env_file: .env.production
     command: bundle exec sidekiq -c 5 -q mailers
-    depends_on:
-      - db
-      - redis
+#    depends_on:
+#      - db
+#      - redis
     volumes:
       - ./public/system:/mastodon/public/system
 
@@ -72,10 +72,10 @@ services:
     build: .
     image: gargron/mastodon
     env_file: .env.production
-    command: bundle exec sidekiq -c 10 -q pull
-    depends_on:
-      - db
-      - redis
+    command: bundle exec sidekiq -c 20 -q pull
+#    depends_on:
+#      - db
+#      - redis
     volumes:
       - ./public/system:/mastodon/public/system
 
@@ -83,11 +83,11 @@ services:
     restart: always
     build: .
     image: gargron/mastodon
-    command: bundle exec sidekiq -c 15 -q push
+    command: bundle exec sidekiq -c 20 -q push
     env_file: .env.production
-    depends_on:
-      - db
-      - redis
+#    depends_on:
+#      - db
+#      - redis
     volumes:
       - ./public/system:/mastodon/public/system
 
@@ -96,10 +96,10 @@ services:
     build: .
     image: gargron/mastodon
     env_file: .env.production
-    command: bundle exec sidekiq -c 40 -q default 
-    depends_on:
-      - db
-      - redis
+    command: bundle exec sidekiq -c 45 -q default 
+#    depends_on:
+#      - db
+#      - redis
     volumes:
       - ./public/system:/mastodon/public/system
 
