@@ -3,6 +3,8 @@ import Trie from 'substring-trie';
 
 const trie = new Trie(Object.keys(unicodeMapping));
 
+const assetHost = process.env.CDN_HOST || '';
+
 const emojify = (str, customEmojis = {}) => {
   let rtn = '';
   for (;;) {
@@ -37,7 +39,7 @@ const emojify = (str, customEmojis = {}) => {
       str = str.slice(i + 1);
     } else {
       const [filename, shortCode] = unicodeMapping[match];
-      rtn += str.slice(0, i) + `<img draggable="false" class="emojione" alt="${match}" title=":${shortCode}:" src="/emoji/${filename}.svg" />`;
+      rtn += str.slice(0, i) + `<img draggable="false" class="emojione" alt="${match}" title=":${shortCode}:" src="${assetHost}/emoji/${filename}.svg" />`;
       str = str.slice(i + match.length);
     }
   }
@@ -45,3 +47,43 @@ const emojify = (str, customEmojis = {}) => {
 };
 
 export default emojify;
+
+export const toCodePoint = (unicodeSurrogates, sep = '-') => {
+  let r = [], c = 0, p = 0, i = 0;
+
+  while (i < unicodeSurrogates.length) {
+    c = unicodeSurrogates.charCodeAt(i++);
+
+    if (p) {
+      r.push((0x10000 + ((p - 0xD800) << 10) + (c - 0xDC00)).toString(16));
+      p = 0;
+    } else if (0xD800 <= c && c <= 0xDBFF) {
+      p = c;
+    } else {
+      r.push(c.toString(16));
+    }
+  }
+
+  return r.join(sep);
+};
+
+export const buildCustomEmojis = customEmojis => {
+  const emojis = [];
+
+  customEmojis.forEach(emoji => {
+    const shortcode = emoji.get('shortcode');
+    const url       = emoji.get('url');
+    const name      = shortcode.replace(':', '');
+
+    emojis.push({
+      name,
+      short_names: [name],
+      text: '',
+      emoticons: [],
+      keywords: [name],
+      imageUrl: url,
+    });
+  });
+
+  return emojis;
+};
