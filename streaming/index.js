@@ -254,7 +254,7 @@ const startWorker = (workerId) => {
 
   const placeholders = (arr, shift = 0) => arr.map((_, i) => `$${i + 1 + shift}`).join(', ');
 
-  const streamFrom = (id, req, output, attachCloseHandler, needsFiltering = false, notificationOnly = false) => {
+  const streamFrom = (id, req, output, attachCloseHandler, needsFiltering = false, notificationOnly = false ,needsLocalAccountFiltering = false) => {
     const streamType = notificationOnly ? ' (notification)' : '';
     log.verbose(req.requestId, `Starting stream from ${id} for ${req.accountId}${streamType}`);
 
@@ -291,6 +291,11 @@ const startWorker = (workerId) => {
             log.silly(req.requestId, `Message ${unpackedPayload.id} filtered by language (${unpackedPayload.language})`);
             done();
             return;
+          }
+          if(needsLocalAccountFiltering){
+            if(accountDomain){
+              return;
+            }
           }
 
           const queries = [
@@ -390,6 +395,12 @@ const startWorker = (workerId) => {
     streamFrom(channel, req, streamToHttp(req, res), streamHttpEnd(req, subscriptionHeartbeat(channel)));
   });
 
+  app.get('/api/v1/streaming/iuser', (req, res) => {
+    const channel = `timeline:${req.accountId}`;
+    streamFrom(channel, req, streamToHttp(req, res), streamHttpEnd(req, subscriptionHeartbeat(channel)));
+    streamFrom('timeline:public:local', req, streamToHttp(req, res), streamHttpEnd(req), true , false, true);
+  });
+
   app.get('/api/v1/streaming/user/notification', (req, res) => {
     streamFrom(`timeline:${req.accountId}`, req, streamToHttp(req, res), streamHttpEnd(req), false, true);
   });
@@ -427,6 +438,11 @@ const startWorker = (workerId) => {
     case 'user':
       const channel = `timeline:${req.accountId}`;
       streamFrom(channel, req, streamToWs(req, ws), streamWsEnd(req, ws, subscriptionHeartbeat(channel)));
+      break;
+    case 'iuser':
+      const channel = `timeline:${req.accountId}`;
+      streamFrom(channel, req, streamToWs(req, ws), streamWsEnd(req, ws, subscriptionHeartbeat(channel)));
+      streamFrom('timeline:public:local', req, streamToWs(req, ws), streamWsEnd(req, ws), true, false, true);
       break;
     case 'user:notification':
       streamFrom(`timeline:${req.accountId}`, req, streamToWs(req, ws), streamWsEnd(req, ws), false, true);
