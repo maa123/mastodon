@@ -274,6 +274,12 @@ const startWorker = (workerId) => {
         return;
       }
 
+      if (needsLocalAccountFiltering && event === 'update') {
+        if (!accountDomain) {
+          return;
+        }
+      }
+
       // Only messages that may require filtering are statuses, since notifications
       // are already personalized and deletes do not matter
       if (needsFiltering && event === 'update') {
@@ -291,11 +297,6 @@ const startWorker = (workerId) => {
             log.silly(req.requestId, `Message ${unpackedPayload.id} filtered by language (${unpackedPayload.language})`);
             done();
             return;
-          }
-          if(needsLocalAccountFiltering){
-            if(accountDomain){
-              return;
-            }
           }
 
           const queries = [
@@ -397,8 +398,8 @@ const startWorker = (workerId) => {
 
   app.get('/api/v1/streaming/iuser', (req, res) => {
     const channel = `timeline:${req.accountId}`;
-    streamFrom(channel, req, streamToHttp(req, res), streamHttpEnd(req, subscriptionHeartbeat(channel)));
-    streamFrom('timeline:public:local', req, streamToHttp(req, res), streamHttpEnd(req), true , false, true);
+    streamFrom(channel, req, streamToHttp(req, res), streamHttpEnd(req, subscriptionHeartbeat(channel)), false, false, true);
+    streamFrom('timeline:public:local', req, streamToHttp(req, res), streamHttpEnd(req), true);
   });
 
   app.get('/api/v1/streaming/user/notification', (req, res) => {
@@ -441,8 +442,8 @@ const startWorker = (workerId) => {
       break;
     case 'iuser':
       const channel = `timeline:${req.accountId}`;
-      streamFrom(channel, req, streamToWs(req, ws), streamWsEnd(req, ws, subscriptionHeartbeat(channel)));
-      streamFrom('timeline:public:local', req, streamToWs(req, ws), streamWsEnd(req, ws), true, false, true);
+      streamFrom(channel, req, streamToWs(req, ws), streamWsEnd(req, ws, subscriptionHeartbeat(channel)), false, false, true);
+      streamFrom('timeline:public:local', req, streamToWs(req, ws), streamWsEnd(req, ws), true);
       break;
     case 'user:notification':
       streamFrom(`timeline:${req.accountId}`, req, streamToWs(req, ws), streamWsEnd(req, ws), false, true);
