@@ -9,7 +9,7 @@
     "start": "node ./streaming/index.js",
     "test": "npm run test:lint && npm run test:jest",
     "test:lint": "eslint -c .eslintrc.yml --ext=js app/javascript/ config/webpack/ spec/javascript/ streaming/",
-    "test:jest": "cross-env NODE_ENV=test jest",
+    "test:jest": "cross-env NODE_ENV=test jest --coverage",
     "postinstall": "npm rebuild node-sass"
   },
   "repository": {
@@ -134,22 +134,5 @@
   },
   "optionalDependencies": {
     "fsevents": "*"
-  },
-  "jest": {
-    "projects": [
-      "<rootDir>/app/javascript/mastodon"
-    ],
-    "testPathIgnorePatterns": [
-      "<rootDir>/node_modules/",
-      "<rootDir>/vendor/",
-      "<rootDir>/config/",
-      "<rootDir>/log/",
-      "<rootDir>/public/",
-      "<rootDir>/tmp/"
-    ],
-    "setupFiles": [
-      "raf/polyfill"
-    ],
-    "setupTestFrameworkScriptFile": "<rootDir>/app/javascript/mastodon/test_setup.js"
   }
 }
