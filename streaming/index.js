@@ -441,8 +441,8 @@ const startWorker = (workerId) => {
       streamFrom(channel, req, streamToWs(req, ws), streamWsEnd(req, ws, subscriptionHeartbeat(channel)));
       break;
     case 'iuser':
-      const channel = `timeline:${req.accountId}`;
-      streamFrom(channel, req, streamToWs(req, ws), streamWsEnd(req, ws, subscriptionHeartbeat(channel)), false, false, true);
+      const ichannel = `timeline:${req.accountId}`;
+      streamFrom(ichannel, req, streamToWs(req, ws), streamWsEnd(req, ws, subscriptionHeartbeat(ichannel)), false, false, true);
       streamFrom('timeline:public:local', req, streamToWs(req, ws), streamWsEnd(req, ws), true);
       break;
     case 'user:notification':
