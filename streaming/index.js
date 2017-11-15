@@ -397,8 +397,8 @@ const startWorker = (workerId) => {
   });
 
   app.get('/api/v1/streaming/iuser', (req, res) => {
-    const channel = `timeline:${req.accountId}`;
-    streamFrom(channel, req, streamToHttp(req, res), streamHttpEnd(req, subscriptionHeartbeat(channel)), false, false, true);
+    const cchannel = `timeline:${req.accountId}`;
+    streamFrom(channel, req, streamToHttp(req, res), streamHttpEnd(req, subscriptionHeartbeat(cchannel)), false, false, true);
     streamFrom('timeline:public:local', req, streamToHttp(req, res), streamHttpEnd(req), true);
   });
 
