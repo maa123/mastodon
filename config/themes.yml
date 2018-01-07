@@ -1,3 +1,4 @@
 default: styles/application.scss
 MstdnArea: styles/kemo.scss
 MstdnArea2: styles/kemo2.scss
+MstdnBlue: styles/mstdn.scss
