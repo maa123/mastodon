@@ -1,5 +1,3 @@
-@import 'application';
-
 
 $classic-base-color: #1B5E20; 
 
@@ -19,3 +17,5 @@ $ui-base-lighter-color: lighten($ui-base-color, 26%) !default; // Lighter darkes
 $ui-primary-color: $classic-primary-color !default;            // Lighter
 $ui-secondary-color: $classic-secondary-color !default;        // Lightest
 $ui-highlight-color: $classic-highlight-color !default;        // Vibrant
+
+@import 'application';
