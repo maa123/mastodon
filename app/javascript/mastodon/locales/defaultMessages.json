@@ -121,6 +121,15 @@
         "id": "status.load_more"
       }
     ],
+    "path": "app/javascript/mastodon/components/load_gap.json"
+  },
+  {
+    "descriptors": [
+      {
+        "defaultMessage": "Load more",
+        "id": "status.load_more"
+      }
+    ],
     "path": "app/javascript/mastodon/components/load_more.json"
   },
   {
@@ -196,6 +205,10 @@
       {
         "defaultMessage": "Delete",
         "id": "status.delete"
+      },
+      {
+        "defaultMessage": "Direct message @{name}",
+        "id": "status.direct"
       },
       {
         "defaultMessage": "Mention @{name}",
@@ -1371,6 +1384,10 @@
         "id": "status.delete"
       },
       {
+        "defaultMessage": "Direct message @{name}",
+        "id": "status.direct"
+      },
+      {
         "defaultMessage": "Mention @{name}",
         "id": "status.mention"
       },
@@ -1716,6 +1733,10 @@
       {
         "defaultMessage": "Notifications",
         "id": "tabs_bar.notifications"
+      },
+      {
+        "defaultMessage": "Search",
+        "id": "tabs_bar.search"
       },
       {
         "defaultMessage": "Local",
