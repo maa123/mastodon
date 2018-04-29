@@ -45,9 +45,6 @@ ja:
     people_who_follow: "%{name} さんをフォロー中のアカウント"
     posts: がおー
     posts_with_replies: がおーと返信
-    media: メディア
-    roles:
-      admin: Admin
     remote_follow: リモートフォロー
     reserved_username: このユーザー名は予約されています
     roles:
