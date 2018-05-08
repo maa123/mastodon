@@ -1,6 +1,6 @@
 require 'rails_helper'
 
-RSpec.describe ResolveAccountService do
+RSpec.describe ResolveAccountService, type: :service do
   subject { described_class.new }
 
   before do
@@ -116,6 +116,7 @@ RSpec.describe ResolveAccountService do
         expect(account.activitypub?).to eq true
         expect(account.domain).to eq 'ap.example.com'
         expect(account.inbox_url).to eq 'https://ap.example.com/users/foo/inbox'
+        expect(account.actor_type).to eq 'Person'
       end
     end
 
