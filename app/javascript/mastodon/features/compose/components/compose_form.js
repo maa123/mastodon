@@ -80,7 +80,7 @@ export default class ComposeForm extends ImmutablePureComponent {
     const { is_submitting, is_uploading, anyMedia } = this.props;
     const fulltext = [this.props.spoiler_text, countableText(this.props.text)].join('');
 
-    if (is_submitting || is_uploading || length(fulltext) > 500 || (fulltext.length !== 0 && fulltext.trim().length === 0 && !anyMedia)) {
+    if (is_submitting || is_uploading || length(fulltext) > 1024 || (fulltext.length !== 0 && fulltext.trim().length === 0 && !anyMedia)) {
       return;
     }
 
