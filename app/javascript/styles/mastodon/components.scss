@@ -298,6 +298,19 @@
     position: relative;
   }
 
+  .spoiler-input {
+    height: 0;
+    transform-origin: bottom;
+    opacity: 0.0;
+    transition: all 0.4s ease;
+
+    &.spoiler-input--visible {
+      height: 47px;
+      opacity: 1.0;
+      transition: all 0.4s ease;
+    }
+  }
+
   .autosuggest-textarea__textarea,
   .spoiler-input__input {
     display: block;
@@ -569,9 +582,9 @@
 }
 
 .reply-indicator {
-  border-radius: 4px 4px 0 0;
+  border-radius: 4px;
   position: relative;
-  bottom: -2px;
+  bottom: 10px;
   background: $ui-primary-color;
   padding: 10px;
 }
@@ -1663,24 +1676,6 @@ a.account__display-name {
   vertical-align: middle;
 }
 
-.static-content {
-  padding: 10px;
-  padding-top: 20px;
-  color: $dark-text-color;
-
-  h1 {
-    font-size: 16px;
-    font-weight: 500;
-    margin-bottom: 40px;
-    text-align: center;
-  }
-
-  p {
-    font-size: 13px;
-    margin-bottom: 20px;
-  }
-}
-
 .columns-area {
   display: flex;
   flex: 1 1 auto;
@@ -1772,6 +1767,8 @@ a.account__display-name {
     margin-bottom: 0;
   }
 
+  .getting-started__wrapper,
+  .getting-started__trends,
   .search {
     margin-bottom: 10px;
   }
@@ -2175,7 +2172,8 @@ a.account__display-name {
 }
 
 .getting-started__wrapper,
-.getting_started {
+.getting-started,
+.flex-spacer {
   background: $ui-base-color;
 }
 
@@ -2184,16 +2182,58 @@ a.account__display-name {
   overflow-y: auto;
 }
 
+.flex-spacer {
+  flex: 1 1 auto;
+}
+
 .getting-started {
-  background: $ui-base-color;
   flex: 1 0 auto;
+  color: $dark-text-color;
 
   p {
-    color: $secondary-text-color;
+    color: $dark-text-color;
+    font-size: 13px;
+    margin-bottom: 20px;
+
+    a {
+      color: $dark-text-color;
+      text-decoration: underline;
+    }
   }
 
   a {
-    color: $dark-text-color;
+    text-decoration: none;
+    color: $darker-text-color;
+
+    &:hover,
+    &:focus,
+    &:active {
+      text-decoration: underline;
+    }
+  }
+
+  &__footer {
+    flex: 0 0 auto;
+    padding: 10px;
+    padding-top: 20px;
+
+    ul {
+      margin-bottom: 10px;
+    }
+
+    ul li {
+      display: inline;
+    }
+  }
+
+  &__trends {
+    background: $ui-base-color;
+    flex: 1 1 auto;
+  }
+
+  &__scrollable {
+    max-height: 100%;
+    overflow-y: auto;
   }
 }
 
