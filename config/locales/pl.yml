@@ -6,14 +6,12 @@ pl:
     about_this: O tej instancji
     administered_by: 'Administrowana przez:'
     api: API
+    apps: Aplikacje
     closed_registrations: Rejestracja na tej instancji jest obecnie zamknięta. Możesz jednak zarejestrować się na innej instancji, uzyskując dostęp do tej samej sieci.
     contact: Kontakt
     contact_missing: Nie ustawiono
     contact_unavailable: Nie dotyczy
-    description_headline: Czym jest %{domain}?
     documentation: Dokumentacja
-    domain_count_after: instancjami
-    domain_count_before: Serwer połączony z
     extended_description_html: |
       <h3>Dobre miejsce na zasady użytkowania</h3>
       <p>Nie ustawiono jeszcze szczegółowego opisu</p>
@@ -39,6 +37,7 @@ pl:
     user_count_before: Z serwera korzysta
     what_is_mastodon: Czym jest Mastodon?
   accounts:
+    choices_html: 'Polecani przez %{name}:'
     follow: Śledź
     followers: Śledzący
     following: Śledzeni
@@ -49,6 +48,8 @@ pl:
     nothing_here: Niczego tu nie ma!
     people_followed_by: Konta śledzone przez %{name}
     people_who_follow: Osoby, które śledzą konto %{name}
+    pin_errors:
+      following: Musisz śledzić osobę, którą chcesz polecać
     posts: Wpisy
     posts_with_replies: Wpisy z odpowiedziami
     reserved_username: Ta nazwa użytkownika jest zarezerwowana
@@ -281,6 +282,7 @@ pl:
       search: Szukaj
       title: Znane instancje
     invites:
+      deactivate_all: Unieważnij wszystkie
       filter:
         all: Wszystkie
         available: Dostępne
@@ -662,11 +664,14 @@ pl:
     publishing: Publikowanie
     web: Sieć
   remote_follow:
-    acct: Podaj swój adres (nazwa@domena), z którego chcesz śledzić
+    acct: Podaj swój adres (nazwa@domena), z którego chcesz wykonać działanie
     missing_resource: Nie udało się znaleźć adresu przekierowania z Twojej domeny
     no_account_html: Nie masz konta? Możesz <a href='%{sign_up_path}' target='_blank'>zarejestrować się tutaj</a>
     proceed: Śledź
     prompt: 'Zamierzasz śledzić:'
+  remote_interaction:
+    proceed: Przejdź do interakcji
+    prompt: 'Chcesz dokonać interakcji z tym wpisem:'
   remote_unfollow:
     error: Błąd
     title: Tytuł
@@ -754,6 +759,7 @@ pl:
       private: Nie możesz przypiąć niepublicznego wpisu
       reblog: Nie możesz przypiąć podbicia wpisu
     show_more: Pokaż więcej
+    sign_in_to_participate: Zaloguj się, aby udzielić się w tej konwersacji
     title: '%{name}: "%{quote}"'
     visibilities:
       private: Tylko dla śledzących

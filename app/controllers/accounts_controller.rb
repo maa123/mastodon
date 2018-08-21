@@ -10,8 +10,9 @@ class AccountsController < ApplicationController
   def show
     respond_to do |format|
       format.html do
-        @body_classes    = 'with-modals'
-        @pinned_statuses = []
+        @body_classes      = 'with-modals'
+        @pinned_statuses   = []
+        @endorsed_accounts = @account.endorsed_accounts.to_a.sample(4)
 
         if current_account && @account.blocking?(current_account)
           @statuses = []
@@ -41,7 +42,7 @@ class AccountsController < ApplicationController
       format.json do
         skip_session!
 
-        render_cached_json(['activitypub', 'actor', @account.cache_key], content_type: 'application/activity+json') do
+        render_cached_json(['activitypub', 'actor', @account], content_type: 'application/activity+json') do
           ActiveModelSerializers::SerializableResource.new(@account, serializer: ActivityPub::ActorSerializer, adapter: ActivityPub::Adapter)
         end
       end

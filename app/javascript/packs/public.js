@@ -31,6 +31,7 @@ function main() {
   const React = require('react');
   const ReactDOM = require('react-dom');
   const Rellax = require('rellax');
+  const createHistory = require('history').createBrowserHistory;
 
   ready(() => {
     const locale = document.documentElement.lang;
@@ -66,13 +67,6 @@ function main() {
       }, datetime, now, datetime.getFullYear());
     });
 
-    [].forEach.call(document.querySelectorAll('.modal-button'), (content) => {
-      content.addEventListener('click', (e) => {
-        e.preventDefault();
-        window.open(e.target.href, 'mastodon-intent', 'width=445,height=600,resizable=no,menubar=no,status=no,scrollbars=yes');
-      });
-    });
-
     const reactComponents = document.querySelectorAll('[data-component]');
     if (reactComponents.length > 0) {
       import(/* webpackChunkName: "containers/media_container" */ '../mastodon/containers/media_container')
@@ -86,6 +80,14 @@ function main() {
     }
 
     new Rellax('.parallax', { speed: -1 });
+
+    const history = createHistory();
+    const detailedStatuses = document.querySelectorAll('.public-layout .detailed-status');
+    const location = history.location;
+    if (detailedStatuses.length === 1 && (!location.state || !location.state.scrolledToDetailedStatus)) {
+      detailedStatuses[0].scrollIntoView();
+      history.replace(location.pathname, { ...location.state, scrolledToDetailedStatus: true });
+    }
   });
 
   delegate(document, '.webapp-btn', 'click', ({ target, button }) => {
@@ -108,6 +110,20 @@ function main() {
     }
 
     return false;
+  });
+
+  delegate(document, '.modal-button', 'click', e => {
+    e.preventDefault();
+
+    let href;
+
+    if (e.target.nodeName !== 'A') {
+      href = e.target.parentNode.href;
+    } else {
+      href = e.target.href;
+    }
+
+    window.open(href, 'mastodon-intent', 'width=445,height=600,resizable=no,menubar=no,status=no,scrollbars=yes');
   });
 
   delegate(document, '#account_display_name', 'input', ({ target }) => {
