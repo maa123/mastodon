@@ -23,7 +23,9 @@ class Api::V1::Timelines::PublicController < Api::BaseController
   def public_statuses
     statuses = public_timeline_statuses.paginate_by_id(
       limit_param(DEFAULT_STATUSES_LIMIT),
-      params_slice(:max_id, :since_id, :min_id)
+      params[:max_id],
+      params[:since_id],
+      params[:min_id]
     )
 
     if truthy_param?(:only_media)
