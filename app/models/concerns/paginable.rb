@@ -21,6 +21,7 @@ module Paginable
     }
 
     scope :paginate_by_id, ->(limit, **options) {
+      options = options.symbolize_keys
       if options[:min_id].present?
         paginate_by_min_id(limit, options[:min_id]).reverse
       else
