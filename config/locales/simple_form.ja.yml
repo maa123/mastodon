@@ -121,7 +121,7 @@ ja:
         must_be_following: フォローしていないユーザーからの通知をブロック
         must_be_following_dm: フォローしていないユーザーからのダイレクトメッセージをブロック
       invite_request:
-        text: 意気込みをお聞かせください
+        text: スパムで無いことが分かる程度の何かを書いてください
       notification_emails:
         digest: タイムラインからピックアップしてメールで通知する
         favourite: お気に入りに登録された時にメールで通知する
