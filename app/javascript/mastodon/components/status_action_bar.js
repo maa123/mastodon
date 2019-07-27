@@ -33,6 +33,7 @@ const messages = defineMessages({
   admin_account: { id: 'status.admin_account', defaultMessage: 'Open moderation interface for @{name}' },
   admin_status: { id: 'status.admin_status', defaultMessage: 'Open this status in the moderation interface' },
   copy: { id: 'status.copy', defaultMessage: 'Copy link to status' },
+  translate: { id: 'status.translate', defaultMessage: 'Google Translate' },
 });
 
 const obfuscatedCount = count => {
@@ -177,6 +178,11 @@ class StatusActionBar extends ImmutablePureComponent {
     }
   }
 
+  handleTranslate = () => {
+    const url = `https://translate.google.com/?sl=auto&tl=ja&text=${encodeURIComponent(this.props.status.get('search_index'))}`;
+    window.open(url);
+  }
+
   render () {
     const { status, intl, withDismiss } = this.props;
 
@@ -194,6 +200,7 @@ class StatusActionBar extends ImmutablePureComponent {
     if (publicStatus) {
       menu.push({ text: intl.formatMessage(messages.copy), action: this.handleCopy });
       menu.push({ text: intl.formatMessage(messages.embed), action: this.handleEmbed });
+      menu.push({ text: intl.formatMessage(messages.translate), action: this.handleTranslate });
     }
 
     menu.push(null);
