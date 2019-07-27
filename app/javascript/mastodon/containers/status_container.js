@@ -173,6 +173,16 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     }
   },
 
+  onTranslate (source_text) {
+    fetch(`https://mstdn.kemono-friends.info/api/ex/translate?text=${encodeURIComponent(source_text)}`).then(res=>res.text()).then(res => {
+      dispatch(openModal('CONFIRM', {
+          message: `翻訳結果: \n ${res}`,
+          confirm: "閉じる",
+          onConfirm: () => {},
+        }));
+    });
+  },
+
 });
 
 export default injectIntl(connect(makeMapStateToProps, mapDispatchToProps)(Status));

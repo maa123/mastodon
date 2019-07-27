@@ -67,6 +67,7 @@ class StatusActionBar extends ImmutablePureComponent {
     onEmbed: PropTypes.func,
     onMuteConversation: PropTypes.func,
     onPin: PropTypes.func,
+    onTranslate: PropTypes.func,
     withDismiss: PropTypes.bool,
     intl: PropTypes.object.isRequired,
   };
@@ -179,8 +180,7 @@ class StatusActionBar extends ImmutablePureComponent {
   }
 
   handleTranslate = () => {
-    const url = `https://translate.google.com/?sl=auto&tl=ja&text=${encodeURIComponent(this.props.status.get('search_index'))}`;
-    window.open(url);
+    this.props.onTranslate(this.props.status.get('search_index'));
   }
 
   render () {
