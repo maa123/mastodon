@@ -173,12 +173,13 @@ const mapDispatchToProps = (dispatch, { intl }) => ({
     }
   },
 
-  onTranslate (status) {
-    let source_text = status.get('search_index');
-    let source_html = status.get('contentHtml');
-    status.set('contentHtml', `${source_html} <br >\n Loading...`);
-    fetch(`https://mstdn.kemono-friends.info/api/v2/translate?text=${encodeURIComponent(source_text)}`).then(res=>res.text()).then(res => {
-      status.set('contentHtml', `${source_html} <br >\n翻訳結果: \n${res}`);
+  onTranslate (source_text) {
+    fetch(`https://mstdn.kemono-friends.info/api/ex/translate?text=${encodeURIComponent(source_text)}`).then(res=>res.text()).then(res => {
+      dispatch(openModal('CONFIRM', {
+          message: `翻訳結果: \n ${res}`,
+          confirm: "閉じる",
+          onConfirm: () => {},
+        }));
     });
   },
 

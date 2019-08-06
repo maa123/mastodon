@@ -180,7 +180,7 @@ class StatusActionBar extends ImmutablePureComponent {
   }
 
   handleTranslate = () => {
-    this.props.onTranslate(this.props.status);
+    this.props.onTranslate(this.props.status.get('search_index'));
   }
 
   render () {
