@@ -95,6 +95,21 @@ class ComposeForm extends ImmutablePureComponent {
     this.props.onSubmit(this.context.router ? this.context.router.history : null);
   }
 
+  handleZWCopy = () => {
+    const textarea = document.createElement('textarea');
+
+    textarea.textContent    = "​";
+    textarea.style.position = 'fixed';
+    try {
+      textarea.select();
+      document.execCommand('copy');
+    } catch (e) {
+
+    } finally {
+      document.body.removeChild(textarea);
+    }
+  }
+
   onSuggestionsClearRequested = () => {
     this.props.onClearSuggestions();
   }
@@ -243,11 +258,14 @@ class ComposeForm extends ImmutablePureComponent {
             <PrivacyDropdownContainer />
             <SpoilerButtonContainer />
           </div>
-          <div className='character-counter__wrapper'><CharacterCounter max={1024} text={text} /></div>
+          <div className='character-counter__wrapper'><CharacterCounter max={2048} text={text} /></div>
         </div>
 
         <div className='compose-form__publish'>
           <div className='compose-form__publish-button-wrapper'><Button text={publishText} onClick={this.handleSubmit} disabled={disabledButton} block /></div>
+        </div>
+        <div className='compose-form__publish'>
+          <div className='compose-form__publish-button-wrapper'><Button text='ゼロ幅' onClick={this.handleZWCopy} block /></div>
         </div>
       </div>
     );
