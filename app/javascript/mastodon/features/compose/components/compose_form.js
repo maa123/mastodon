@@ -100,6 +100,9 @@ class ComposeForm extends ImmutablePureComponent {
 
     textarea.textContent    = "​";
     textarea.style.position = 'fixed';
+
+    document.body.appendChild(textarea);
+    
     try {
       textarea.select();
       document.execCommand('copy');
