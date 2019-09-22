@@ -55,6 +55,7 @@ export default class StatusContent extends React.PureComponent {
         link.addEventListener('click', this.onHashtagClick.bind(this, link.text), false);
       } else {
         link.setAttribute('title', link.href);
+        link.classList.add('unhandled-link');
       }
 
       link.setAttribute('target', '_blank');
@@ -111,7 +112,7 @@ export default class StatusContent extends React.PureComponent {
   }
 
   onHashtagClick = (hashtag, e) => {
-    hashtag = hashtag.replace(/^#/, '').toLowerCase();
+    hashtag = hashtag.replace(/^#/, '');
 
     if (this.context.router && e.button === 0 && !(e.ctrlKey || e.metaKey)) {
       e.preventDefault();
@@ -163,11 +164,6 @@ export default class StatusContent extends React.PureComponent {
     } else {
       this.setState({ hidden: !this.state.hidden });
     }
-  }
-
-  handleCollapsedClick = (e) => {
-    e.preventDefault();
-    this.setState({ collapsed: !this.state.collapsed });
   }
 
   setRef = (c) => {
@@ -234,43 +230,26 @@ export default class StatusContent extends React.PureComponent {
       );
     } else if (this.props.onClick) {
       const output = [
-        <div
-          ref={this.setRef}
-          tabIndex='0'
-          key='content'
-          className={classNames}
-          style={directionStyle}
-          dangerouslySetInnerHTML={content}
-          onMouseDown={this.handleMouseDown}
-          onMouseUp={this.handleMouseUp}
-        />,
+        <div className={classNames} ref={this.setRef} tabIndex='0' style={directionStyle} onMouseDown={this.handleMouseDown} onMouseUp={this.handleMouseUp} key='status-content'>
+          <div className='status__content__text status__content__text--visible' style={directionStyle} dangerouslySetInnerHTML={content} />
+
+          {!!status.get('poll') && <PollContainer pollId={status.get('poll')} />}
+        </div>,
       ];
 
       if (this.state.collapsed) {
         output.push(readMoreButton);
       }
 
-      if (status.get('poll')) {
-        output.push(<PollContainer pollId={status.get('poll')} />);
-      }
-
       return output;
     } else {
-      const output = [
-        <div
-          tabIndex='0'
-          ref={this.setRef}
-          className='status__content'
-          style={directionStyle}
-          dangerouslySetInnerHTML={content}
-        />,
-      ];
+      return (
+        <div className={classNames} ref={this.setRef} tabIndex='0' style={directionStyle}>
+          <div className='status__content__text status__content__text--visible' style={directionStyle} dangerouslySetInnerHTML={content} />
 
-      if (status.get('poll')) {
-        output.push(<PollContainer pollId={status.get('poll')} />);
-      }
-
-      return output;
+          {!!status.get('poll') && <PollContainer pollId={status.get('poll')} />}
+        </div>
+      );
     }
   }
 

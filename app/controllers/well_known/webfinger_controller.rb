@@ -5,26 +5,21 @@ module WellKnown
     include RoutingHelper
 
     before_action { response.headers['Vary'] = 'Accept' }
+    before_action :set_account
+    before_action :check_account_suspension
+
+    rescue_from ActiveRecord::RecordNotFound, ActionController::ParameterMissing, with: :not_found
 
     def show
-      @account = Account.find_local!(username_from_resource)
-
-      respond_to do |format|
-        format.any(:json, :html) do
-          render json: @account, serializer: WebfingerSerializer, content_type: 'application/jrd+json'
-        end
-
-        format.xml do
-          render content_type: 'application/xrd+xml'
-        end
-      end
-
       expires_in 3.days, public: true
-    rescue ActiveRecord::RecordNotFound
-      head 404
+      render json: @account, serializer: WebfingerSerializer, content_type: 'application/jrd+json'
     end
 
     private
+
+    def set_account
+      @account = Account.find_local!(username_from_resource)
+    end
 
     def username_from_resource
       resource_user    = resource_param
@@ -36,6 +31,18 @@ module WellKnown
 
     def resource_param
       params.require(:resource)
+    end
+
+    def check_account_suspension
+      expires_in(3.minutes, public: true) && gone if @account.suspended?
+    end
+
+    def not_found
+      head 404
+    end
+
+    def gone
+      head 410
     end
   end
 end
