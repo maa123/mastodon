@@ -87,6 +87,13 @@ elsif ENV['SWIFT_ENABLED'] == 'true'
     fog_host: ENV['SWIFT_OBJECT_URL'],
     fog_public: true
   )
+elsif ENV['NDFS_ENABLED'] == 'true'
+  Paperclip::Attachment.default_options.merge!(
+    storage: :non_delete_filesystem,
+    use_timestamp: true,
+    path: (ENV['PAPERCLIP_ROOT_PATH'] || ':rails_root/public/system') + '/:class/:attachment/:id_partition/:style/:filename',
+    url: (ENV['PAPERCLIP_ROOT_URL'] || '/system') + '/:class/:attachment/:id_partition/:style/:filename',
+  )
 else
   Paperclip::Attachment.default_options.merge!(
     storage: :filesystem,
