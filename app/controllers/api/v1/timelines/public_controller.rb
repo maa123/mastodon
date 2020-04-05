@@ -3,8 +3,6 @@
 class Api::V1::Timelines::PublicController < Api::BaseController
   after_action :insert_pagination_headers, unless: -> { @statuses.empty? }
 
-  respond_to :json
-
   def show
     @statuses = load_statuses
     render json: @statuses, each_serializer: REST::StatusSerializer, relationships: StatusRelationshipsPresenter.new(@statuses, current_user&.account_id)
