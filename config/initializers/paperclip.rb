@@ -90,9 +90,9 @@ elsif ENV['SWIFT_ENABLED'] == 'true'
 elsif ENV['NDFS_ENABLED'] == 'true'
   Paperclip::Attachment.default_options.merge!(
     storage: :non_delete_filesystem,
-    use_timestamp: true,
-    path: (ENV['PAPERCLIP_ROOT_PATH'] || ':rails_root/public/system') + '/:class/:attachment/:id_partition/:style/:filename',
-    url: (ENV['PAPERCLIP_ROOT_URL'] || '/system') + '/:class/:attachment/:id_partition/:style/:filename',
+    use_timestamp: false,
+    path: File.join(ENV.fetch('PAPERCLIP_ROOT_PATH', File.join(':rails_root', 'public', 'system')), ':class', ':attachment', ':id_partition', ':style', ':filename'),
+    url: ENV.fetch('PAPERCLIP_ROOT_URL', '/system') + '/:class/:attachment/:id_partition/:style/:filename',
   )
 else
   Paperclip::Attachment.default_options.merge!(
