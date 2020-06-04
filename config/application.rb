@@ -116,7 +116,7 @@ module Mastodon
     config.i18n.default_locale = ENV['DEFAULT_LOCALE']&.to_sym
 
     unless config.i18n.available_locales.include?(config.i18n.default_locale)
-      config.i18n.default_locale = :en
+      config.i18n.default_locale = :ja
     end
 
     # config.paths.add File.join('app', 'api'), glob: File.join('**', '*.rb')
