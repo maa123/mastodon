@@ -3,8 +3,8 @@
 class LanguageDetector
   include Singleton
 
-  CHARACTER_THRESHOLD    = 140
-  RELIABLE_CHARACTERS_RE = /[\p{Hebrew}\p{Arabic}\p{Syriac}\p{Thaana}\p{Nko}\p{Han}\p{Katakana}\p{Hiragana}\p{Hangul}]+/m
+  WORDS_THRESHOLD        = 4
+  RELIABLE_CHARACTERS_RE = /[\p{Hebrew}\p{Arabic}\p{Syriac}\p{Thaana}\p{Nko}\p{Han}\p{Katakana}\p{Hiragana}\p{Hangul}\p{Thai}]+/m
 
   def initialize
     @identifier = CLD3::NNetLanguageIdentifier.new(1, 2048)

@@ -8,9 +8,11 @@ import { autoPlayGif, me, isStaff } from 'mastodon/initial_state';
 import classNames from 'classnames';
 import Icon from 'mastodon/components/icon';
 import Avatar from 'mastodon/components/avatar';
-import { shortNumberFormat } from 'mastodon/utils/numbers';
+import { counterRenderer } from 'mastodon/components/common_counter';
+import ShortNumber from 'mastodon/components/short_number';
 import { NavLink } from 'react-router-dom';
 import DropdownMenuContainer from 'mastodon/containers/dropdown_menu_container';
+import AccountNoteContainer from '../containers/account_note_container';
 
 const messages = defineMessages({
   unfollow: { id: 'account.unfollow', defaultMessage: 'Unfollow' },
@@ -45,6 +47,7 @@ const messages = defineMessages({
   unendorse: { id: 'account.unendorse', defaultMessage: 'Don\'t feature on profile' },
   add_or_remove_from_list: { id: 'account.add_or_remove_from_list', defaultMessage: 'Add or Remove from lists' },
   admin_account: { id: 'status.admin_account', defaultMessage: 'Open moderation interface for @{name}' },
+  add_account_note: { id: 'account.add_account_note', defaultMessage: 'Add note for @{name}' },
 });
 
 const dateFormatOptions = {
@@ -312,20 +315,31 @@ class Header extends ImmutablePureComponent {
                 </div>
               )}
 
+              {account.get('id') !== me && <AccountNoteContainer account={account} />}
+
               {account.get('note').length > 0 && account.get('note') !== '<p></p>' && <div className='account__header__content' dangerouslySetInnerHTML={content} />}
             </div>
 
             <div className='account__header__extra__links'>
               <NavLink isActive={this.isStatusesPageActive} activeClassName='active' to={`/accounts/${account.get('id')}`} title={intl.formatNumber(account.get('statuses_count'))}>
-                <strong>{shortNumberFormat(account.get('statuses_count'))}</strong> <FormattedMessage id='account.posts' defaultMessage='Toots' />
+                <ShortNumber
+                  value={account.get('statuses_count')}
+                  renderer={counterRenderer('statuses')}
+                />
               </NavLink>
 
               <NavLink exact activeClassName='active' to={`/accounts/${account.get('id')}/following`} title={intl.formatNumber(account.get('following_count'))}>
-                <strong>{shortNumberFormat(account.get('following_count'))}</strong> <FormattedMessage id='account.follows' defaultMessage='Follows' />
+                <ShortNumber
+                  value={account.get('following_count')}
+                  renderer={counterRenderer('following')}
+                />
               </NavLink>
 
               <NavLink exact activeClassName='active' to={`/accounts/${account.get('id')}/followers`} title={intl.formatNumber(account.get('followers_count'))}>
-                <strong>{shortNumberFormat(account.get('followers_count'))}</strong> <FormattedMessage id='account.followers' defaultMessage='Followers' />
+                <ShortNumber
+                  value={account.get('followers_count')}
+                  renderer={counterRenderer('followers')}
+                />
               </NavLink>
             </div>
           </div>
