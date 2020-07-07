@@ -37,7 +37,7 @@ class LanguageDetector
   end
 
   def sufficient_text_length?(text)
-    text.size >= CHARACTER_THRESHOLD
+    text.split(/\s+/).size >= WORDS_THRESHOLD
   end
 
   def language_specific_character_set?(text)
