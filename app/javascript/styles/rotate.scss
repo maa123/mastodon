@@ -1,0 +1,12 @@
+@import 'application';
+
+@keyframes form-rotate {
+	0% {transform: rotate(0deg);}
+	100% {transform: rotate(360deg);}
+}
+.compose-form:not(:hover){
+    animation: form-rotate 1.2s linear 0s infinite;
+}
+.drawer:not(:hover){
+    animation: form-rotate 1.4s linear 0s infinite reverse;
+}
