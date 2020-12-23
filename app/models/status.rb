@@ -56,7 +56,7 @@ class Status < ApplicationRecord
   belongs_to :thread, foreign_key: 'in_reply_to_id', class_name: 'Status', inverse_of: :replies, optional: true
   belongs_to :reblog, foreign_key: 'reblog_of_id', class_name: 'Status', inverse_of: :reblogs, optional: true
 
-  has_many :favourites, inverse_of: :status, dependent: :delete_all
+  has_many :favourites, inverse_of: :status, dependent: :destroy
   has_many :bookmarks, inverse_of: :status, dependent: :destroy
   has_many :reblogs, foreign_key: 'reblog_of_id', class_name: 'Status', inverse_of: :reblog, dependent: :destroy
   has_many :replies, foreign_key: 'in_reply_to_id', class_name: 'Status', inverse_of: :thread
@@ -226,14 +226,6 @@ class Status < ApplicationRecord
     fields += preloadable_poll.options unless preloadable_poll.nil?
 
     @emojis = CustomEmoji.from_text(fields.join(' '), account.domain)
-  end
-
-  def mark_for_mass_destruction!
-    @marked_for_mass_destruction = true
-  end
-
-  def marked_for_mass_destruction?
-    @marked_for_mass_destruction
   end
 
   def replies_count
@@ -430,7 +422,7 @@ class Status < ApplicationRecord
   end
 
   def decrement_counter_caches
-    return if direct_visibility? || marked_for_mass_destruction?
+    return if direct_visibility?
 
     account&.decrement_count!(:statuses_count)
     reblog&.decrement_count!(:reblogs_count) if reblog?
@@ -440,7 +432,7 @@ class Status < ApplicationRecord
   def unlink_from_conversations
     return unless direct_visibility?
 
-    mentioned_accounts = mentions.includes(:account).map(&:account)
+    mentioned_accounts = (association(:mentions).loaded? ? mentions : mentions.includes(:account)).map(&:account)
     inbox_owners       = mentioned_accounts.select(&:local?) + (account.local? ? [account] : [])
 
     inbox_owners.each do |inbox_owner|
