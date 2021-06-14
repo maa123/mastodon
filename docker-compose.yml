@@ -74,55 +74,52 @@ services:
       test: ["CMD-SHELL", "wget -q --spider --proxy=off localhost:4000/api/v1/streaming/health || exit 1"]
     ports:
       - "127.0.0.1:4000:4000"
-#    depends_on:
-#      - db
-#      - redis
+    depends_on:
+      - db
+      - redis
 
   sidekiq1:
     build: .
-    image: gargron/mastodon
+    image: tootsuite/mastodon
     restart: always
     env_file: .env.production
     command: bundle exec sidekiq -c 50 -q default 
-#    depends_on:
-#      - db
-#      - redis
+    depends_on:
+      - db
+      - redis
     volumes:
       - ./public/system:/mastodon/public/system
 
   sidekiq2:
-    restart: always
     build: .
-    image: gargron/mastodon
+    image: tootsuite/mastodon
+    restart: always
     env_file: .env.production
     command: bundle exec sidekiq -c 5 -q mailers
-#    depends_on:
-#      - db
-#      - redis
+    depends_on:
+      - db
+      - redis
     volumes:
       - ./public/system:/mastodon/public/system
 
   sidekiq3:
-    restart: always
     build: .
-    image: gargron/mastodon
+    image: tootsuite/mastodon
+    restart: always
     env_file: .env.production
-    command: bundle exec sidekiq -c 20 -q pull
-#    depends_on:
-#      - db
-#      - redis
+    command: bundle exec sidekiq -c 5 -q pull -q push
+    depends_on:
+      - db
+      - redis
     volumes:
       - ./public/system:/mastodon/public/system
 
   sidekiq4:
-    restart: always
     build: .
     image: tootsuite/mastodon
     restart: always
-    build: .
-    image: gargron/mastodon
     env_file: .env.production
-    command: bundle exec sidekiq
+    command: bundle exec sidekiq -c 30 -q scheduler -q default
     depends_on:
       - db
       - redis
