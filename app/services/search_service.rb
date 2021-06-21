@@ -1,6 +1,36 @@
 # frozen_string_literal: true
 
 class SearchService < BaseService
+  attr_accessor :host
+  attr_accessor :port
+  attr_accessor :prefix
+  attr_accessor :url
+  attr_accessor :enabled
+
+  def initialize
+    self.host = ENV.fetch('GS_HOST') { 'localhost' }
+    self.port = ENV.fetch('GS_PORT') { 10041 }
+    self.prefix = ENV.fetch('GS_API_PREFIX') { '' }
+    self.url = 'http://' + self.host + ':' + self.port.to_s + '/' + self.prefix
+    self.enabled = ENV['GS_ENABLED'] == 'true'
+  end
+
+  def search(text, offset, limit)
+    response = HTTP.get(self.url.to_s + 'select', :params => { "table" => "statuses", "match_columns" => "text", "query" => escape(text), "sort_keys" => "_key", "offset" => offset, "limit" => limit, "filter" => 'spoiler_text == ""', "output_columns" => "_key" })
+    resp = JSON.parse(response.body.to_s)
+    header = resp[0]
+    body = resp[1]
+    arr = []
+    if header[0] != 0
+      arr
+    end
+    items = body[0][2..-1]
+    items.each { |item|
+      arr.push(item[0])
+    }
+    arr
+  end
+
   def call(query, account, limit, options = {})
     @query   = query&.strip
     @account = account
@@ -24,6 +54,14 @@ class SearchService < BaseService
 
   private
 
+  def escape(text)
+    text.gsub(/[\\"()]/, "\\" => '\\\\', '"' => '\"', '(' => '\(', ')' => '\)')
+  end
+
+  def escape_str(text)
+    '"' + text.gsub(/[\\"]/, "\\" => '\\\\', '"' => '\"') + '"'
+  end
+
   def perform_accounts_search!
     AccountSearchService.new.call(
       @query,
@@ -35,27 +73,28 @@ class SearchService < BaseService
   end
 
   def perform_statuses_search!
-    definition = parsed_query.apply(StatusesIndex.filter(term: { searchable_by: @account.id }))
+    ids = self.search(@query, @offset, @limit)
+    results = Status.where(id: ids)
+                    .where(visibility: :public)
+                    .limit @limit
 
     if @options[:account_id].present?
-      definition = definition.filter(term: { account_id: @options[:account_id] })
+      results = results.where account_id: @options[:account_id]
     end
 
-    if @options[:min_id].present? || @options[:max_id].present?
-      range      = {}
-      range[:gt] = @options[:min_id].to_i if @options[:min_id].present?
-      range[:lt] = @options[:max_id].to_i if @options[:max_id].present?
-      definition = definition.filter(range: { id: range })
+    if @options[:min_id].present?
+      results = results.where("statuses.id > ?", @options[:min_id])
     end
 
-    results             = definition.limit(@limit).offset(@offset).objects.compact
+    if @options[:max_id].present?
+      results = results.where("statuses.id < ?", @options[:max_id])
+    end
+
     account_ids         = results.map(&:account_id)
     account_domains     = results.map(&:account_domain)
     preloaded_relations = relations_map_for_account(@account, account_ids, account_domains)
 
     results.reject { |status| StatusFilter.new(status, @account, preloaded_relations).filtered? }
-  rescue Faraday::ConnectionFailed, Parslet::ParseFailed
-    []
   end
 
   def perform_hashtags_search!
@@ -88,7 +127,7 @@ class SearchService < BaseService
   end
 
   def full_text_searchable?
-    return false unless Chewy.enabled?
+    return false unless self.enabled
 
     statuses_search? && !@account.nil? && !((@query.start_with?('#') || @query.include?('@')) && !@query.include?(' '))
   end
