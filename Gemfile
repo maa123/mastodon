@@ -24,7 +24,7 @@ gem 'paperclip', '~> 6.0'
 gem 'blurhash', '~> 0.1'
 
 gem 'active_model_serializers', '~> 0.10'
-gem 'addressable', '~> 2.7'
+gem 'addressable', '~> 2.8'
 gem 'bootsnap', '~> 1.6.0', require: false
 gem 'browser'
 gem 'charlock_holmes', '~> 0.7.7'
@@ -155,5 +155,3 @@ gem 'concurrent-ruby', require: false
 gem 'connection_pool', require: false
 
 gem 'xorcist', '~> 1.1'
-
-gem 'resolv', '~> 0.1.0'
