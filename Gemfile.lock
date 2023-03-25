@@ -7,6 +7,15 @@ GIT
       hkdf (~> 0.2)
       jwt (~> 2.0)
 
+GIT
+  remote: https://github.com/maa123/twitter-text-rb.git
+  revision: bcca2411cd6f46c4362970c924f3a715d140e3cd
+  glob: rb/*.gemspec
+  specs:
+    twitter-text (3.1.0)
+      idn-ruby
+      unf (~> 0.1.0)
+
 GEM
   remote: https://rubygems.org/
   specs:
@@ -707,9 +716,6 @@ GEM
       tty-screen (~> 0.8)
       wisper (~> 2.0)
     tty-screen (0.8.1)
-    twitter-text (3.1.0)
-      idn-ruby
-      unf (~> 0.1.0)
     tzinfo (2.0.6)
       concurrent-ruby (~> 1.0)
     tzinfo-data (1.2022.7)
@@ -882,7 +888,7 @@ DEPENDENCIES
   strong_migrations (~> 0.7)
   thor (~> 1.2)
   tty-prompt (~> 0.23)
-  twitter-text (~> 3.1.0)
+  twitter-text!
   tzinfo-data (~> 1.2022)
   webauthn (~> 2.5)
   webmock (~> 3.18)
