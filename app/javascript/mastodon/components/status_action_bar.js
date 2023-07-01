@@ -235,7 +235,7 @@ class StatusActionBar extends ImmutablePureComponent {
 
   handleTranslate = () => {
     this.props.onTranslate(this.props.status.get('search_index'));
-  }
+  };
 
   render () {
     const { status, relationship, intl, withDismiss, withCounters, scrollKey } = this.props;
