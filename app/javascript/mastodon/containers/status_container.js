@@ -230,16 +230,6 @@ const mapDispatchToProps = (dispatch, { intl, contextType }) => ({
     }
   },
 
-  onTranslate (source_text) {
-    fetch(`https://mstdn.kemono-friends.info/api/ex/translate?text=${encodeURIComponent(source_text)}`).then(res=>res.text()).then(res => {
-      dispatch(openModal('CONFIRM', {
-          message: `翻訳結果: \n ${res}`,
-          confirm: "閉じる",
-          onConfirm: () => {},
-        }));
-    });
-  },
-
   onToggleCollapsed (status, isCollapsed) {
     dispatch(toggleStatusCollapse(status.get('id'), isCollapsed));
   },
