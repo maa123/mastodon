@@ -25,7 +25,6 @@ jobs:
     steps:
       - uses: actions/checkout@v3
       - uses: hadolint/hadolint-action@v3.1.0
-      - uses: docker/setup-qemu-action@v2
       - uses: docker/setup-buildx-action@v2
 
       - name: Log in to the Github Container registry
@@ -57,7 +56,7 @@ jobs:
         with:
           context: .
           build-args: MASTODON_VERSION_SUFFIX=${{ steps.version_vars.outputs.mastodon_version_suffix }}
-          platforms: linux/amd64,linux/arm64
+          platforms: linux/amd64
           provenance: false
           builder: ${{ steps.buildx.outputs.name }}
           push: ${{ github.repository == 'maa123/mastodon' && github.event_name != 'pull_request' }}
