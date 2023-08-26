@@ -9,8 +9,8 @@ class SearchService < BaseService
     self.url = ENV.fetch('SEARCH_ENDPOINT') { 'http://localhost:8080' }
   end
 
-  def search(text, offset, limit)
-    response = HTTP.get(self.url, :params => {"query" => text, "offset" => offset, "limit" => limit})
+  def search(text, account, offset, limit)
+    response = HTTP.get(self.url, :params => {"query" => text, "account" => account, "offset" => offset, "limit" => limit})
     JSON.parse(response.body.to_s)
   end
 
@@ -48,7 +48,7 @@ class SearchService < BaseService
   end
 
   def perform_statuses_search!
-    ids = self.search(@query, @offset, @limit)
+    ids = self.search(@query, @account, @offset, @limit)
     results = Status.where(id: ids)
                     .where(visibility: :public)
                     .limit @limit
