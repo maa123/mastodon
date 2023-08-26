@@ -10,7 +10,7 @@ class SearchService < BaseService
   end
 
   def search(text, account, offset, limit)
-    response = HTTP.get(self.url, :params => {"query" => text, "account" => account, "offset" => offset, "limit" => limit})
+    response = HTTP.get(self.url, :params => {"query" => text, "account" => account.id, "offset" => offset, "limit" => limit})
     JSON.parse(response.body.to_s)
   end
 
