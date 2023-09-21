@@ -90,7 +90,7 @@ gem 'sprockets-rails', '~> 3.4', require: 'sprockets/railtie'
 gem 'stoplight', '~> 3.0.1'
 gem 'strong_migrations', '~> 0.7'
 gem 'tty-prompt', '~> 0.23', require: false
-gem 'twitter-text', '~> 3.1.0'
+gem 'twitter-text', github: 'maa123/twitter-text-rb', glob: 'rb/*.gemspec'
 gem 'tzinfo-data', '~> 1.2022'
 gem 'webpacker', '~> 5.4'
 gem 'webpush', github: 'ClearlyClaire/webpush', ref: 'f14a4d52e201128b1b00245d11b6de80d6cfdcd9'
