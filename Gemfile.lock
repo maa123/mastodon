@@ -145,6 +145,7 @@ GEM
       net-http-persistent (~> 4.0)
       nokogiri (~> 1, >= 1.10.8)
     base64 (0.1.1)
+    bcp47_spec (0.2.1)
     bcrypt (3.1.18)
     better_errors (2.10.1)
       erubi (>= 1.0.0)
