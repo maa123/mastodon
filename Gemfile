@@ -200,9 +200,10 @@ gem 'connection_pool', require: false
 gem 'xorcist', '~> 1.1'
 gem 'cocoon', '~> 1.2'
 
-#DKIM
-gem 'dkim', '~> 1.0', '>= 1.0.1'
 gem 'net-http', '~> 0.3.2'
 gem 'rubyzip', '~> 2.3'
 
 gem 'hcaptcha', '~> 7.1'
+
+#DKIM
+gem 'dkim', '~> 1.0', '>= 1.0.1'
