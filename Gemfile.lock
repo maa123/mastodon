@@ -848,7 +848,7 @@ DEPENDENCIES
   devise-two-factor (~> 4.1)
   devise_pam_authenticatable2 (~> 9.2)
   discard (~> 1.2)
-  dkim (~> 1.1)
+  dkim (~> 1.0, >= 1.0.1)
   doorkeeper (~> 5.6)
   dotenv-rails (~> 2.8)
   ed25519 (~> 1.3)
