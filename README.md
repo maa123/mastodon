@@ -2,7 +2,7 @@
 
 https://mstdn.kemono-friends.info
 
-[![Build Status](https://img.shields.io/circleci/build/github/maa123/mastodon.svg)](https://circleci.com/gh/maa123/mastodon/tree/master)
+[![Build Status](https://github.com/maa123/mastodon/actions/workflows/build-image.yml/badge.svg?branch=master)](https://github.com/maa123/mastodon/actions/workflows/build-image.yml)
 [![Code Climate](https://img.shields.io/codeclimate/maintainability/maa123/mastodon.svg)](https://codeclimate.com/github/maa123/mastodon/maintainability)
 
 エラーページの マストドンのフレンズは [桜木李杏](https://mstdn.kemono-friends.info/@cynthia_koko)さんに描いて頂きました。 
