@@ -206,4 +206,4 @@ gem 'rubyzip', '~> 2.3'
 gem 'hcaptcha', '~> 7.1'
 
 #DKIM
-gem 'dkim', '~> 1.0', '>= 1.0.1'
+gem 'dkim', '~> 1.1'
