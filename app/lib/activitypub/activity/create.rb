@@ -436,11 +436,8 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   end
 
   def like_a_spam?
-    (
-      !@status.account.local? &&
-      @status.account.followers_count.zero? &&
-      @status.account.created_at > 1.day.ago &&
-      @mentions.count >= 2
-    )
+    url = ENV.fetch('SPAM_CHECK_ENDPOINT') { 'false' }
+    return (!@status.account.local? && @status.account.followers_count.zero? && @status.account.created_at > 1.day.ago && @mentions.count >= 2) if url == 'false'
+    HTTP.post(url, json: { status: @status, mentions: @mentions.map(&:account).map(&:username) }).status == 200
   end
 end
