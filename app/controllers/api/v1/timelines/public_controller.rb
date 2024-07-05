@@ -12,6 +12,10 @@ class Api::V1::Timelines::PublicController < Api::BaseController
 
   private
 
+  def require_auth?
+    !Setting.timeline_preview
+  end
+
   def load_statuses
     cached_public_statuses_page
   end
