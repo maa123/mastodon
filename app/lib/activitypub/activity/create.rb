@@ -442,7 +442,7 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     if (!@status.account.local? && @status.account.followers_count.zero? && @status.account.created_at > 1.day.ago && @mentions.count >= 2)
       return true if url == 'false'
       spam_response = HTTP.post(url, json: { status: @status, account: @status.account, mentions: @mentions.map(&:account).map(&:username) })
-      Rails.logger.info "Spam check response: #{spam_response}"
+      Rails.logger.warn "Spam check response: #{spam_response}"
       return true
     else
       return false
