@@ -439,8 +439,10 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
   def like_a_spam?
     url = ENV.fetch('SPAM_CHECK_ENDPOINT') { 'false' }
+    if @mentions.count == 0
+      return false
+    end
     if (!@status.account.local? && @status.account.followers_count.zero? && @status.account.created_at > 1.day.ago && @mentions.count >= 2)
-      return true if url == 'false'
       return true
     else
       return false if url == 'false'
