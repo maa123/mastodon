@@ -441,12 +441,16 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     url = ENV.fetch('SPAM_CHECK_ENDPOINT') { 'false' }
     if (!@status.account.local? && @status.account.followers_count.zero? && @status.account.created_at > 1.day.ago && @mentions.count >= 2)
       return true if url == 'false'
-      spam_response = HTTP.post("#{url}/check", json: { status: @status, account: @status.account, mentions: @mentions.map(&:account).map(&:username) })
-      HTTP.post("#{url}/log", json: { res: spam_response })
-      Rails.logger.warn "Spam check response: #{spam_response}"
       return true
     else
-      return false
+      return false if url == 'false'
+      spam_response = HTTP.post("#{url}/check", json: { status: @status, account: @status.account, mentions: @mentions.map(&:account).map(&:username) })
+      HTTP.post("#{url}/log", json: { res: spam_response })
+      if spam_response.body.to_s.chomp == 'SPAM'
+        return true
+      else
+        return false
+      end
     end
   rescue => e
     Rails.logger.warn "Error checking for spam: #{e}"
