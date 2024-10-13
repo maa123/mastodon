@@ -439,9 +439,14 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
 
   def like_a_spam?
     url = ENV.fetch('SPAM_CHECK_ENDPOINT') { 'false' }
-    return (!@status.account.local? && @status.account.followers_count.zero? && @status.account.created_at > 1.day.ago && @mentions.count >= 2) if url == 'false'
-    return false if @status.account.local?
-    HTTP.post(url, json: { status: @status, account: @status.account, mentions: @mentions.map(&:account).map(&:username) }).code != '200'
+    if (!@status.account.local? && @status.account.followers_count.zero? && @status.account.created_at > 1.day.ago && @mentions.count >= 2)
+      return true if url == 'false'
+      spam_response = HTTP.post(url, json: { status: @status, account: @status.account, mentions: @mentions.map(&:account).map(&:username) })
+      Rails.logger.info "Spam check response: #{spam_response}"
+      return true
+    else
+      return false
+    end
   rescue => e
     Rails.logger.warn "Error checking for spam: #{e}"
     false
