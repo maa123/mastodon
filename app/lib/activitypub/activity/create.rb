@@ -445,8 +445,10 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     else
       return false if url == 'false'
       spam_response = HTTP.post("#{url}/check", json: { status: @status, account: @status.account, mentions: @mentions.map(&:account).map(&:username) })
-      HTTP.post("#{url}/log", json: { res: spam_response })
-      if spam_response.body.to_s.chomp == 'SPAM'
+      res_body = spam_response.body.to_s.chomp
+
+      # HTTP.post("#{url}/log", json: { res: spam_response })
+      if res_body == 'SPAM'
         return true
       else
         return false
