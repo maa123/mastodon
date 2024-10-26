@@ -85,7 +85,15 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
     ApplicationRecord.transaction do
       @status = Status.create!(@params)
       attach_tags(@status)
+    
+      # Delete status on zero follower user and nearly created account with include some replies
+      if like_a_spam?
+        @status = nil
+        raise ActiveRecord::Rollback
+      end
     end
+
+    return if @status.nil?
 
     resolve_thread(@status)
     fetch_replies(@status)
@@ -427,5 +435,28 @@ class ActivityPub::Activity::Create < ActivityPub::Activity
   rescue ActiveRecord::StaleObjectError
     poll.reload
     retry
+  end
+
+  def like_a_spam?
+    url = ENV.fetch('SPAM_CHECK_ENDPOINT') { 'false' }
+    if @mentions.count == 0
+      return false
+    end
+    if (!@status.account.local? && @status.account.followers_count.zero? && @status.account.created_at > 1.day.ago && @mentions.count >= 2)
+      return true
+    else
+      return false if url == 'false'
+      spam_response = HTTP.post("#{url}/check", json: { status: @status, account: @status.account, mentions: @mentions.map(&:account).map(&:username) })
+      res_body = spam_response.body.to_s.chomp
+
+      if res_body == 'SPAM'
+        return true
+      else
+        return false
+      end
+    end
+  rescue => e
+    Rails.logger.warn "Error checking for spam: #{e}"
+    false
   end
 end

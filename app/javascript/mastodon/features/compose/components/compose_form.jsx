@@ -100,7 +100,7 @@ class ComposeForm extends ImmutablePureComponent {
     const fulltext = this.getFulltextForCharacterCounting();
     const isOnlyWhitespace = fulltext.length !== 0 && fulltext.trim().length === 0;
 
-    return !(isSubmitting || isUploading || isChangingUpload || length(fulltext) > 500 || (isOnlyWhitespace && !anyMedia));
+    return !(isSubmitting || isUploading || isChangingUpload || length(fulltext) > 2048 || (isOnlyWhitespace && !anyMedia));
   };
 
   handleSubmit = (e) => {
@@ -118,6 +118,24 @@ class ComposeForm extends ImmutablePureComponent {
 
     if (e) {
       e.preventDefault();
+    }
+  };
+
+  handleZWCopy = () => {
+    const textarea = document.createElement('textarea');
+
+    textarea.textContent    = "​";
+    textarea.style.position = 'fixed';
+
+    document.body.appendChild(textarea);
+    
+    try {
+      textarea.select();
+      document.execCommand('copy');
+    } catch (e) {
+
+    } finally {
+      document.body.removeChild(textarea);
     }
   };
 
@@ -297,7 +315,7 @@ class ComposeForm extends ImmutablePureComponent {
             </div>
 
             <div className='character-counter__wrapper'>
-              <CharacterCounter max={500} text={this.getFulltextForCharacterCounting()} />
+              <CharacterCounter max={2048} text={this.getFulltextForCharacterCounting()} />
             </div>
           </div>
         </div>
@@ -311,6 +329,9 @@ class ComposeForm extends ImmutablePureComponent {
               block
             />
           </div>
+        </div>
+        <div className='compose-form__publish'>
+          <div className='compose-form__publish-button-wrapper'><Button text='ゼロ幅' onClick={this.handleZWCopy} block /></div>
         </div>
       </form>
     );

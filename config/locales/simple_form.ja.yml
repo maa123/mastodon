@@ -272,7 +272,7 @@ ja:
       invite:
         comment: コメント
       invite_request:
-        text: 意気込みをお聞かせください
+        text: スパムで無いことが分かる程度の何かを書いてください
       ip_block:
         comment: コメント
         ip: IP

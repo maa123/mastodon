@@ -1,27 +1,29 @@
 name: Ruby Linting
 on:
-  push:
-    branches-ignore:
-      - 'dependabot/**'
-      - 'renovate/**'
-    paths:
-      - 'Gemfile*'
-      - '.rubocop*.yml'
-      - '.ruby-version'
-      - 'config/brakeman.ignore'
-      - '**/*.rb'
-      - '**/*.rake'
-      - '.github/workflows/lint-ruby.yml'
+  # 自動実行は行わない
+  workflow_dispatch:
+  # push:
+  #   branches-ignore:
+  #     - 'dependabot/**'
+  #     - 'renovate/**'
+  #   paths:
+  #     - 'Gemfile*'
+  #     - '.rubocop*.yml'
+  #     - '.ruby-version'
+  #     - 'config/brakeman.ignore'
+  #     - '**/*.rb'
+  #     - '**/*.rake'
+  #     - '.github/workflows/lint-ruby.yml'
 
-  pull_request:
-    paths:
-      - 'Gemfile*'
-      - '.rubocop*.yml'
-      - '.ruby-version'
-      - 'config/brakeman.ignore'
-      - '**/*.rb'
-      - '**/*.rake'
-      - '.github/workflows/lint-ruby.yml'
+  # pull_request:
+  #   paths:
+  #     - 'Gemfile*'
+  #     - '.rubocop*.yml'
+  #     - '.ruby-version'
+  #     - 'config/brakeman.ignore'
+  #     - '**/*.rb'
+  #     - '**/*.rake'
+  #     - '.github/workflows/lint-ruby.yml'
 
 jobs:
   lint:

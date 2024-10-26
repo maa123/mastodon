@@ -28,6 +28,7 @@ require_relative '../lib/sanitize_ext/sanitize_config'
 require_relative '../lib/redis/namespace_extensions'
 require_relative '../lib/paperclip/url_generator_extensions'
 require_relative '../lib/paperclip/attachment_extensions'
+require_relative '../lib/paperclip/storage/non_delete_filesystem'
 require_relative '../lib/paperclip/lazy_thumbnail'
 require_relative '../lib/paperclip/gif_transcoder'
 require_relative '../lib/paperclip/media_type_spoof_detector_extensions'
@@ -187,7 +188,7 @@ module Mastodon
       if config.i18n.available_locales.include?(custom_default_locale)
         custom_default_locale
       else
-        :en
+        :ja
       end
     end
 
