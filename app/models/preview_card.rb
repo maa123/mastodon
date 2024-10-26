@@ -38,7 +38,7 @@ class PreviewCard < ApplicationRecord
   include Attachmentable
 
   IMAGE_MIME_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'].freeze
-  LIMIT = 2.megabytes
+  LIMIT = 1.megabytes
 
   BLURHASH_OPTIONS = {
     x_comp: 4,
@@ -123,7 +123,7 @@ class PreviewCard < ApplicationRecord
     def image_styles(file)
       styles = {
         original: {
-          pixels: 230_400, # 640x360px
+          geometry: '400x400>',
           file_geometry_parser: FastGeometryParser,
           convert_options: '-coalesce',
           blurhash: BLURHASH_OPTIONS,
