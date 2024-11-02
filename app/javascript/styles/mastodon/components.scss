@@ -1946,7 +1946,7 @@ a.account__display-name {
 
 .dropdown-menu__separator {
   border-bottom: 1px solid var(--dropdown-border-color);
-  margin: 5px 0;
+  margin: 2px 0;
   height: 0;
 }
 
@@ -1992,6 +1992,10 @@ a.account__display-name {
         max-height: 300px;
         overflow-y: scroll;
       }
+
+      max-height: 50vh;
+      overflow-y: auto;
+      scrollbar-width: thin;
     }
 
     &--loading {
@@ -2021,12 +2025,12 @@ a.account__display-name {
 
 .dropdown-menu__item {
   font-size: 13px;
-  line-height: 18px;
+  line-height: 14px;
   font-weight: 500;
   display: block;
 
   &--dangerous {
-    color: $error-value-color;
+    color: lighte($error-value-color, 10%);
   }
 
   a,
