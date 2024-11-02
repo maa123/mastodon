@@ -3628,8 +3628,8 @@ a.status-card {
 .status-card__title {
   display: block;
   font-weight: 700;
-  font-size: 19px;
-  line-height: 24px;
+  font-size: 1em;
+  line-height: 1.2em;
   color: $primary-text-color;
   overflow: hidden;
   white-space: nowrap;
@@ -3647,14 +3647,15 @@ a.status-card {
   flex: 1 1 auto;
   overflow: hidden;
   padding: 15px;
+  padding-top: 10px;
   box-sizing: border-box;
   max-width: 100%;
 }
 
 .status-card__host {
   display: block;
-  font-size: 14px;
-  margin-bottom: 8px;
+  font-size: 0.9em;
+  margin-bottom: 0.2em;
   white-space: nowrap;
   overflow: hidden;
   text-overflow: ellipsis;
@@ -3662,7 +3663,7 @@ a.status-card {
 
 .status-card__author {
   display: block;
-  margin-top: 8px;
+  margin-top: 0.4em;
   font-size: 14px;
   color: $primary-text-color;
   white-space: nowrap;
