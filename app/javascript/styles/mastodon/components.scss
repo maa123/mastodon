@@ -6280,6 +6280,7 @@ a.status-card {
   position: relative;
   width: 100%;
   min-height: 64px;
+  max-height: 12em; /* limit */
   display: grid;
   grid-template-columns: 50% 50%;
   grid-template-rows: 50% 50%;
