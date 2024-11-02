@@ -77,4 +77,14 @@ class StatusesSearchService < BaseService
 
     @query = "#{@query} #{syntax_options.join(' ')}".strip if syntax_options.any?
   end
+
+  def relations_map_for_account(account, account_ids, domains)
+    {
+      blocking: Account.blocking_map(account_ids, account.id),
+      blocked_by: Account.blocked_by_map(account_ids, account.id),
+      muting: Account.muting_map(account_ids, account.id),
+      following: Account.following_map(account_ids, account.id),
+      domain_blocking_by_domain: Account.domain_blocking_map_by_domain(domains, account.id),
+    }
+  end
 end
