@@ -22,6 +22,7 @@ Rails.application.routes.draw do
     /getting-started
     /keyboard-shortcuts
     /home
+    /tiho
     /public
     /public/local
     /public/remote

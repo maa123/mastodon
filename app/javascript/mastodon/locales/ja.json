@@ -677,6 +677,7 @@
   "subscribed_languages.save": "変更を保存",
   "subscribed_languages.target": "{target}さんの購読言語を変更します",
   "tabs_bar.home": "ホーム",
+  "tabs_bar.local_timeline": "ますとどんちほー",
   "tabs_bar.notifications": "通知",
   "time_remaining.days": "残り{number}日",
   "time_remaining.hours": "残り{number}時間",
