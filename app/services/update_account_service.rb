@@ -4,6 +4,11 @@ class UpdateAccountService < BaseService
   def call(account, params, raise_error: false)
     was_locked    = account.locked
     update_method = raise_error ? :update! : :update
+    failed_image_attribute = nil
+
+    validate_image_dimensions!(params.slice(:avatar, :header)) do |attribute|
+      failed_image_attribute = attribute
+    end
 
     account.send(update_method, params).tap do |ret|
       next unless ret
@@ -13,7 +18,7 @@ class UpdateAccountService < BaseService
       process_hashtags(account)
     end
   rescue Mastodon::DimensionsValidationError, Mastodon::StreamValidationError => e
-    account.errors.add(:avatar, e.message)
+    account.errors.add(failed_image_attribute || :avatar, e.message)
     false
   end
 
@@ -33,5 +38,28 @@ class UpdateAccountService < BaseService
 
   def process_hashtags(account)
     account.tags_as_strings = Extractor.extract_hashtags(account.note)
+  end
+
+  def validate_image_dimensions!(params)
+    params.each do |attribute, file|
+      validate_image_dimension!(file)
+    rescue Mastodon::DimensionsValidationError
+      yield attribute if block_given?
+      raise
+    end
+  end
+
+  def validate_image_dimension!(file)
+    return unless file.respond_to?(:content_type) && file.respond_to?(:path)
+    return unless file.content_type&.start_with?('image/')
+
+    width, height = FastImage.size(file.path)
+    return unless width.present? && height.present?
+
+    if file.content_type == 'image/gif' && width * height > Attachmentable::GIF_MATRIX_LIMIT
+      raise Mastodon::DimensionsValidationError, "#{width}x#{height} GIF files are not supported"
+    elsif width * height > Attachmentable::MAX_MATRIX_LIMIT
+      raise Mastodon::DimensionsValidationError, "#{width}x#{height} images are not supported"
+    end
   end
 end
