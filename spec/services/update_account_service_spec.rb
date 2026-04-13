@@ -37,4 +37,25 @@ RSpec.describe UpdateAccountService, type: :service do
       expect(eve.requested?(account)).to be false
     end
   end
+
+  describe 'oversized profile images' do
+    let(:account) { Fabricate(:account) }
+    let(:oversized_image) { Rails.root.join('spec', 'fixtures', 'files', '4096x4097.png') }
+
+    it 'adds avatar errors to avatar' do
+      result = subject.call(account, { avatar: Rack::Test::UploadedFile.new(oversized_image, 'image/png') })
+
+      expect(result).to be false
+      expect(account.errors.attribute_names).to include(:avatar)
+      expect(account.errors.attribute_names).to_not include(:header)
+    end
+
+    it 'adds header errors to header' do
+      result = subject.call(account, { header: Rack::Test::UploadedFile.new(oversized_image, 'image/png') })
+
+      expect(result).to be false
+      expect(account.errors.attribute_names).to include(:header)
+      expect(account.errors.attribute_names).to_not include(:avatar)
+    end
+  end
 end

@@ -4,8 +4,11 @@ class UpdateAccountService < BaseService
   def call(account, params, raise_error: false)
     was_locked    = account.locked
     update_method = raise_error ? :update! : :update
+    invalid_image_attribute = nil
 
-    validate_image_dimensions!(params.slice(:avatar, :header))
+    validate_image_dimensions!(params.slice(:avatar, :header)) do |attribute|
+      invalid_image_attribute = attribute
+    end
 
     account.send(update_method, params).tap do |ret|
       next unless ret
@@ -15,7 +18,7 @@ class UpdateAccountService < BaseService
       process_hashtags(account)
     end
   rescue Mastodon::DimensionsValidationError, Mastodon::StreamValidationError => e
-    account.errors.add(:avatar, e.message)
+    account.errors.add(invalid_image_attribute || :avatar, e.message)
     false
   end
 
@@ -38,8 +41,11 @@ class UpdateAccountService < BaseService
   end
 
   def validate_image_dimensions!(params)
-    params.each_value do |file|
+    params.each do |attribute, file|
       validate_image_dimension!(file)
+    rescue Mastodon::DimensionsValidationError
+      yield attribute if block_given?
+      raise
     end
   end
 
