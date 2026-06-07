@@ -35,6 +35,11 @@ jobs:
           - linux/arm64
 
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ab7a9404c0f3da075243ca237b5fac12c98deaa5 # v2.19.3
+        with:
+          egress-policy: audit
+
       - uses: actions/checkout@v4
 
       - name: Prepare
@@ -119,6 +124,11 @@ jobs:
       PUSH_TO_IMAGES: ${{ inputs.push_to_images }}
 
     steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ab7a9404c0f3da075243ca237b5fac12c98deaa5 # v2.19.3
+        with:
+          egress-policy: audit
+
       - uses: actions/checkout@v4
 
       - name: Download digests

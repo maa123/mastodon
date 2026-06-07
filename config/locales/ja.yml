@@ -17,8 +17,8 @@ ja:
     pin_errors:
       following: おすすめしたい人はあなたが既にフォローしている必要があります
     posts:
-      other: 投稿
-    posts_tab_heading: 投稿
+      other: がおー
+    posts_tab_heading: がおー
     self_follow_error: 自分のアカウントをフォローすることはできません
   admin:
     account_actions:
@@ -146,7 +146,7 @@ ja:
         targeted_reports: このアカウントについての通報
       silence: サイレンス
       silenced: サイレンス済み
-      statuses: 投稿数
+      statuses: がおー数
       strikes: 前回のストライク
       subscribe: 購読する
       suspend: サスペンド
@@ -403,7 +403,7 @@ ja:
         create: ブロックを作成
         hint: ドメインブロックはデータベース中のアカウント項目の作成を妨げませんが、遡って自動的に指定されたモデレーションをそれらのアカウントに適用します。
         severity:
-          desc_html: "<strong>制限</strong>は、このドメイン上のアカウントからの投稿が、相手をフォローしている場合を除き非表示になります。<strong>停止</strong>は、このドメイン上のすべてのコンテンツ、メディア、およびプロフィールデータを受け付けなくなります。メディアファイルのみを拒否したい場合は<strong>なし</strong>を選択します。"
+          desc_html: "<strong>制限</strong>は、このドメイン上のアカウントからのがおーが、相手をフォローしている場合を除き非表示になります。<strong>停止</strong>は、このドメイン上のすべてのコンテンツ、メディア、およびプロフィールデータを受け付けなくなります。メディアファイルのみを拒否したい場合は<strong>なし</strong>を選択します。"
           noop: なし
           silence: 制限
           suspend: 停止
@@ -815,11 +815,11 @@ ja:
         title: メディア
       metadata: メタデータ
       no_status_selected: 何も選択されていないため、変更されていません
-      open: 投稿を開く
-      original_status: オリジナルの投稿
+      open: がおーを開く
+      original_status: オリジナルのがおー
       reblogs: ブースト
-      status_changed: 投稿を変更しました
-      title: 投稿一覧
+      status_changed: がおーを変更しました
+      title: がおー一覧
       trending: トレンド
       visibility: 公開範囲
       with_media: メディアあり
@@ -1489,7 +1489,7 @@ ja:
       sign_up:
         subject: "%{name}さんがサインアップしました"
     favourite:
-      body: "%{name}さんにお気に入り登録された、あなたの投稿があります:"
+      body: "%{name}さんにお気に入り登録された、あなたのがおーがあります:"
       subject: "%{name}さんにお気に入りに登録されました"
       title: 新たなお気に入り登録
     follow:
@@ -1509,13 +1509,13 @@ ja:
     poll:
       subject: "%{name} さんの投票が終了しました"
     reblog:
-      body: "%{name}さんにブーストされた、あなたの投稿があります:"
-      subject: "%{name}さんにブーストされました"
-      title: 新たなブースト
+      body: "%{name}さんにたーのしーされた、あなたのがおーがあります:"
+      subject: "%{name}さんにたーのしーされました"
+      title: 新たなたーのしー
     status:
-      subject: "%{name}さんが投稿しました"
+      subject: "%{name}さんががおーしました"
     update:
-      subject: "%{name}さんが投稿を更新しました"
+      subject: "%{name}さんががおーを更新しました"
   notifications:
     administration_emails: 管理にかかわるメール通知
     email_events: メールによる通知
@@ -1773,9 +1773,11 @@ ja:
     does_not_match_previous_name: 以前の名前と一致しません
   themes:
     contrast: Mastodon (ハイコントラスト)
-    default: Mastodon (ダーク)
+    default: Mastodon (みどり)
     mastodon-light: Mastodon (ライト)
     system: 自動 (システムのテーマを使用)
+    MstdnBlue: Mastodon (ブルー)
+    GB: Mastodon (GB)
   time:
     formats:
       default: "%Y年%m月%d日 %H:%M"

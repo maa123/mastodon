@@ -17,6 +17,11 @@ jobs:
     if: ${{ github.event.pull_request.head.repo.full_name == github.repository && !github.event.pull_request.draft && contains(github.event.pull_request.labels.*.name, 'build-image') }}
     steps:
       # Repository needs to be cloned so `git rev-parse` below works
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ab7a9404c0f3da075243ca237b5fac12c98deaa5 # v2.19.3
+        with:
+          egress-policy: audit
+
       - name: Clone repository
         uses: actions/checkout@v4
       - id: version_vars

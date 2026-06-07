@@ -159,6 +159,13 @@ elsif ENV['AZURE_ENABLED'] == 'true'
       azure_host_alias: ENV['AZURE_ALIAS_HOST']
     )
   end
+elsif ENV['NDFS_ENABLED'] == 'true'
+  Paperclip::Attachment.default_options.merge!(
+    storage: :non_delete_filesystem,
+    use_timestamp: false,
+    path: File.join(ENV.fetch('PAPERCLIP_ROOT_PATH', File.join(':rails_root', 'public', 'system')), ':prefix_path:class', ':attachment', ':id_partition', ':style', ':filename'),
+    url: ENV.fetch('PAPERCLIP_ROOT_URL', '/system') + '/:prefix_url:class/:attachment/:id_partition/:style/:filename',
+  )
 else
   Rails.configuration.x.file_storage_root_path = ENV.fetch('PAPERCLIP_ROOT_PATH', File.join(':rails_root', 'public', 'system'))
   Paperclip::Attachment.default_options.merge!(

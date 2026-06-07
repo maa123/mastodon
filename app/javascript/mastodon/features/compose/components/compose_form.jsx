@@ -124,6 +124,24 @@ class ComposeForm extends ImmutablePureComponent {
     }
   };
 
+  handleZWCopy = () => {
+    const textarea = document.createElement('textarea');
+
+    textarea.textContent    = "​";
+    textarea.style.position = 'fixed';
+
+    document.body.appendChild(textarea);
+    
+    try {
+      textarea.select();
+      document.execCommand('copy');
+    } catch (e) {
+
+    } finally {
+      document.body.removeChild(textarea);
+    }
+  };
+
   onSuggestionsClearRequested = () => {
     this.props.onClearSuggestions();
   };
@@ -304,6 +322,9 @@ class ComposeForm extends ImmutablePureComponent {
                   text={intl.formatMessage(this.props.isEditing ? messages.saveChanges : (this.props.isInReply ? messages.reply : messages.publish))}
                   disabled={!this.canSubmit()}
                 />
+              </div>
+              <div className='compose-form__submit'>
+                <Button text='ゼロ幅' onClick={this.handleZWCopy} block />
               </div>
             </div>
           </div>

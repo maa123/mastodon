@@ -53,6 +53,7 @@ const messages = defineMessages({
   blocks: { id: 'navigation_bar.blocks', defaultMessage: 'Blocked users' },
   domain_blocks: { id: 'navigation_bar.domain_blocks', defaultMessage: 'Blocked domains' },
   mutes: { id: 'navigation_bar.mutes', defaultMessage: 'Muted users' },
+  library: { id: 'navigation_bar.library', defaultMessage: 'Library (Wiki)' },
   pins: { id: 'navigation_bar.pins', defaultMessage: 'Pinned posts' },
   lists: { id: 'navigation_bar.lists', defaultMessage: 'Lists' },
   discover: { id: 'navigation_bar.discover', defaultMessage: 'Discover' },
@@ -121,6 +122,7 @@ class GettingStarted extends ImmutablePureComponent {
     navItems.push(
       <ColumnLink key='community_timeline' icon='users' iconComponent={PeopleIcon} text={intl.formatMessage(messages.community_timeline)} to='/public/local' />,
       <ColumnLink key='public_timeline' icon='globe' iconComponent={PublicIcon} text={intl.formatMessage(messages.public_timeline)} to='/public' />,
+      <ColumnLink key='tiho' icon='home' text={intl.formatMessage(messages.community_timeline)} to='/tiho' />,
     );
 
     if (signedIn) {

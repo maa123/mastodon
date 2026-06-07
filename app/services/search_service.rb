@@ -1,10 +1,9 @@
 # frozen_string_literal: true
 
 class SearchService < BaseService
-  QUOTE_EQUIVALENT_CHARACTERS = /[“”„«»「」『』《》]/
 
   def call(query, account, limit, options = {})
-    @query     = query&.strip&.gsub(QUOTE_EQUIVALENT_CHARACTERS, '"')
+    @query     = query&.strip
     @account   = account
     @options   = options
     @limit     = limit.to_i
@@ -82,7 +81,7 @@ class SearchService < BaseService
   end
 
   def status_searchable?
-    Chewy.enabled? && status_search? && @account.present?
+    (ENV['SEARCH_ENABLED'] == 'true') && status_search? && @account.present?
   end
 
   def account_searchable?
