@@ -1,0 +1,44 @@
+name: Bundler Audit
+on:
+  merge_group:
+  push:
+    branches:
+      - 'main'
+      - 'stable-*'
+    paths:
+      - 'Gemfile*'
+      - '.ruby-version'
+      - '.github/workflows/bundler-audit.yml'
+
+  pull_request:
+    paths:
+      - 'Gemfile*'
+      - '.ruby-version'
+      - '.github/workflows/bundler-audit.yml'
+
+  schedule:
+    - cron: '0 5 * * 1'
+
+jobs:
+  security:
+    runs-on: ubuntu-latest
+
+    env:
+      BUNDLE_ONLY: development
+
+    steps:
+      - name: Harden the runner (Audit all outbound calls)
+        uses: step-security/harden-runner@ab7a9404c0f3da075243ca237b5fac12c98deaa5 # v2.19.3
+        with:
+          egress-policy: audit
+
+      - name: Clone repository
+        uses: actions/checkout@v4
+
+      - name: Set up Ruby
+        uses: ruby/setup-ruby@v1
+        with:
+          bundler-cache: true
+
+      - name: Run bundler-audit
+        run: bundle exec bundler-audit check --update
