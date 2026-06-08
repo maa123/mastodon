@@ -230,5 +230,5 @@ gem 'hcaptcha', '~> 7.1'
 
 gem 'mail', '~> 2.8'
 
-#DKIM
+# DKIM
 gem 'dkim', '~> 1.1'

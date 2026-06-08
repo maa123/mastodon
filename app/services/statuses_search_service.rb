@@ -1,9 +1,7 @@
 # frozen_string_literal: true
 
 class StatusesSearchService < BaseService
-
-  attr_accessor :url
-  attr_accessor :enabled
+  attr_accessor :url, :enabled
 
   def initialize
     self.enabled = ENV['SEARCH_ENABLED'] == 'true'
@@ -11,7 +9,7 @@ class StatusesSearchService < BaseService
   end
 
   def search(text, account, offset, limit)
-    response = HTTP.get(self.url, :params => {"query" => text, "account" => account.id, "offset" => offset, "limit" => limit})
+    response = HTTP.get(url, params: { 'query' => text, 'account' => account.id, 'offset' => offset, 'limit' => limit })
     JSON.parse(response.body.to_s)
   end
 
@@ -39,22 +37,16 @@ class StatusesSearchService < BaseService
   private
 
   def status_search_results
-    ids = self.search(@query, @account, @offset, @limit)
+    ids = search(@query, @account, @offset, @limit)
     results = Status.where(id: ids)
                     .where(visibility: :public)
                     .limit @limit
 
-    if @options[:account_id].present?
-      results = results.where account_id: @options[:account_id]
-    end
+    results = results.where account_id: @options[:account_id] if @options[:account_id].present?
 
-    if @options[:min_id].present?
-      results = results.where("statuses.id > ?", @options[:min_id])
-    end
+    results = results.where('statuses.id > ?', @options[:min_id]) if @options[:min_id].present?
 
-    if @options[:max_id].present?
-      results = results.where("statuses.id < ?", @options[:max_id])
-    end
+    results = results.where(statuses: { id: ...(@options[:max_id]) }) if @options[:max_id].present?
 
     account_ids         = results.map(&:account_id)
     account_domains     = results.map(&:account_domain)

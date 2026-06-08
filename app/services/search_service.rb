@@ -1,7 +1,6 @@
 # frozen_string_literal: true
 
 class SearchService < BaseService
-
   def call(query, account, limit, options = {})
     @query     = query&.strip
     @account   = account

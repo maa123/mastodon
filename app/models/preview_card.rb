@@ -39,7 +39,7 @@ class PreviewCard < ApplicationRecord
   include Attachmentable
 
   IMAGE_MIME_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'].freeze
-  LIMIT = Rails.configuration.x.use_vips ? 2.megabytes : 1.megabytes
+  LIMIT = Rails.configuration.x.use_vips ? 2.megabytes : 1.megabyte
 
   BLURHASH_OPTIONS = {
     x_comp: 4,

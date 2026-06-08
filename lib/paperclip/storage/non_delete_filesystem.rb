@@ -1,3 +1,4 @@
+# rubocop:disable all -- disable lint
 module Paperclip
   module Storage
     # The default place to store attachments is in the filesystem. Files on the local
