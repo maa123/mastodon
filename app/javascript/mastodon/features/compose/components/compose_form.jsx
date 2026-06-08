@@ -135,7 +135,7 @@ class ComposeForm extends ImmutablePureComponent {
     try {
       textarea.select();
       document.execCommand('copy');
-    } catch (e) {
+    } catch {
 
     } finally {
       document.body.removeChild(textarea);
