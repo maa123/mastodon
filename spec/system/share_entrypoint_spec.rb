@@ -22,8 +22,9 @@ RSpec.describe 'Share page', :js, :streaming do
 
     fill_in_form
 
-    expect(page)
-      .to have_css('.notification-bar-message', text: translations['compose.published.body'])
+    within('.compose-form') do
+      expect(page).to have_field(translations['compose_form.placeholder'], with: '')
+    end
   end
 
   def fill_in_form

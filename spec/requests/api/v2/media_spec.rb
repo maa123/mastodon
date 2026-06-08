@@ -32,14 +32,14 @@ RSpec.describe 'Media API', :attachment_processing do
     context 'when large format media attachment has not been processed' do
       let(:params) { { file: fixture_file_upload('attachment.webm', 'video/webm') } }
 
-      it 'returns http accepted' do
+      it 'returns http success' do
         post '/api/v2/media', headers: headers, params: params
 
         expect(File.exist?(user.account.media_attachments.first.file.path(:small)))
           .to be true
 
         expect(response)
-          .to have_http_status(202)
+          .to have_http_status(200)
 
         expect(response.content_type)
           .to start_with('application/json')

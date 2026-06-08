@@ -85,7 +85,7 @@ RSpec.describe StatusLengthValidator do
   private
 
   def starting_string
-    'a' * 476
+    'a' * 2024
   end
 
   def example_link
