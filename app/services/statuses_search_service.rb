@@ -1,6 +1,19 @@
 # frozen_string_literal: true
 
 class StatusesSearchService < BaseService
+  attr_accessor :url, :enabled
+
+  def initialize
+    super
+    self.enabled = ENV['SEARCH_ENABLED'] == 'true'
+    self.url = ENV.fetch('SEARCH_ENDPOINT') { 'http://localhost:8080' }
+  end
+
+  def search(text, account, offset, limit)
+    response = HTTP.get(url, params: { 'query' => text, 'account' => account.id, 'offset' => offset, 'limit' => limit })
+    JSON.parse(response.body.to_s)
+  end
+
   def call(query, account = nil, options = {})
     MastodonOTELTracer.in_span('StatusesSearchService#call') do |span|
       @query   = query&.strip
@@ -25,15 +38,22 @@ class StatusesSearchService < BaseService
   private
 
   def status_search_results
-    request             = parsed_query.request
-    results             = request.collapse(field: :id).order(id: { order: :desc }).limit(@limit).offset(@offset).objects.compact
+    ids = search(@query, @account, @offset, @limit)
+    results = Status.where(id: ids)
+                    .where(visibility: :public)
+                    .limit @limit
+
+    results = results.where account_id: @options[:account_id] if @options[:account_id].present?
+
+    results = results.where('statuses.id > ?', @options[:min_id]) if @options[:min_id].present?
+
+    results = results.where(statuses: { id: ...(@options[:max_id]) }) if @options[:max_id].present?
+
     account_ids         = results.map(&:account_id)
     account_domains     = results.map(&:account_domain)
-    preloaded_relations = @account.relations_map(account_ids, account_domains)
+    preloaded_relations = relations_map_for_account(@account, account_ids, account_domains)
 
     results.reject { |status| StatusFilter.new(status, @account, preloaded_relations).filtered? }
-  rescue Faraday::ConnectionFailed, Parslet::ParseFailed
-    []
   end
 
   def parsed_query
@@ -59,5 +79,15 @@ class StatusesSearchService < BaseService
     end
 
     @query = "#{@query} #{syntax_options.join(' ')}".strip if syntax_options.any?
+  end
+
+  def relations_map_for_account(account, account_ids, domains)
+    {
+      blocking: Account.blocking_map(account_ids, account.id),
+      blocked_by: Account.blocked_by_map(account_ids, account.id),
+      muting: Account.muting_map(account_ids, account.id),
+      following: Account.following_map(account_ids, account.id),
+      domain_blocking_by_domain: Account.domain_blocking_map_by_domain(domains, account.id),
+    }
   end
 end

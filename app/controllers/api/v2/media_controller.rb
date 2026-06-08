@@ -1,6 +1,10 @@
 # frozen_string_literal: true
 
 class Api::V2::MediaController < Api::V1::MediaController
+end
+__END__
+
+class Api::V2::MediaController < Api::V1::MediaController
   def create
     @media_attachment = current_account.media_attachments.create!(media_and_delay_params)
     render json: @media_attachment, serializer: REST::MediaAttachmentSerializer, status: status_from_media_processing

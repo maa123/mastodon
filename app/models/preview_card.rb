@@ -39,7 +39,7 @@ class PreviewCard < ApplicationRecord
   include Attachmentable
 
   IMAGE_MIME_TYPES = ['image/jpeg', 'image/png', 'image/gif', 'image/webp'].freeze
-  LIMIT = Rails.configuration.x.use_vips ? 8.megabytes : 2.megabytes
+  LIMIT = Rails.configuration.x.use_vips ? 2.megabytes : 1.megabyte
 
   BLURHASH_OPTIONS = {
     x_comp: 4,
@@ -155,7 +155,7 @@ class PreviewCard < ApplicationRecord
     def image_styles(file)
       styles = {
         original: {
-          pixels: 230_400, # 640x360px
+          pixels: 160_000, # 400x400px
           file_geometry_parser: FastGeometryParser,
           convert_options: '-coalesce',
           blurhash: BLURHASH_OPTIONS,
