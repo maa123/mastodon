@@ -4,6 +4,7 @@ class StatusesSearchService < BaseService
   attr_accessor :url, :enabled
 
   def initialize
+    super
     self.enabled = ENV['SEARCH_ENABLED'] == 'true'
     self.url = ENV.fetch('SEARCH_ENDPOINT') { 'http://localhost:8080' }
   end
