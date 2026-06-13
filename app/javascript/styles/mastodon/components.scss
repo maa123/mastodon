@@ -10836,7 +10836,7 @@ noscript {
 }
 
 .notification-ungrouped {
-  padding: 16px 24px;
+  padding: 12px 14px;
   border-bottom: 1px solid var(--background-border-color);
 
   &__header {
@@ -10875,6 +10875,8 @@ noscript {
     &__avatar {
       width: 40px;
       height: 40px;
+      top: 1.4em;
+      left: 0;
     }
   }
 
