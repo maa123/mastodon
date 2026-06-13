@@ -160,6 +160,10 @@ class NavigationPanel extends Component {
             <ColumnLink transparent to='/search' icon='search' iconComponent={SearchIcon} text={intl.formatMessage(messages.search)} />
           )}
 
+          {signedIn && (
+            <ColumnLink transparent to='/tiho' icon='home' iconComponent={HomeIcon} text={intl.formatMessage(messages.local)} />
+          )}
+
           {(signedIn || timelinePreview) && (
             <ColumnLink transparent to='/public/local' isActive={this.isFirehoseActive} icon='globe' iconComponent={PublicIcon} text={intl.formatMessage(messages.firehose)} />
           )}
