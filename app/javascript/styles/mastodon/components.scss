@@ -2858,6 +2858,7 @@ $ui-header-logo-wordmark-width: 99px;
   flex-direction: column;
 
   > .scrollable {
+    background-color: var(--column-background-color);
     border: 1px solid var(--background-border-color);
     border-top: 0;
     border-radius: 0 0 4px 4px;

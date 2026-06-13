@@ -106,6 +106,7 @@ $font-monospace: 'mastodon-font-monospace' !default;
   --background-filter: blur(10px) saturate(180%) contrast(75%) brightness(70%);
   --background-color: #{darken($ui-base-color, 8%)};
   --background-color-tint: #{rgba(darken($ui-base-color, 8%), 0.9)};
+  --column-background-color: #{$ui-base-color};
   --surface-background-color: #{darken($ui-base-color, 4%)};
   --surface-variant-background-color: #{$ui-base-color};
   --surface-variant-active-background-color: #{lighten($ui-base-color, 4%)};
