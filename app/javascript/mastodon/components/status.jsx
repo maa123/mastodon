@@ -569,20 +569,19 @@ class Status extends ImmutablePureComponent {
             {(status.get('spoiler_text').length > 0 && (!matchedFilters || this.state.showDespiteFilter)) && <ContentWarning text={status.getIn(['translation', 'spoilerHtml']) || status.get('spoilerHtml')} expanded={expanded} onClick={this.handleExpandedToggle} />}
 
             {expanded && (
-              <>
-                <StatusContent
-                  status={status}
-                  onClick={this.handleClick}
-                  onTranslate={this.handleTranslate}
-                  collapsible
-                  onCollapsedToggle={this.handleCollapsedToggle}
-                  {...statusContentProps}
-                />
-
-                {media}
-                {hashtagBar}
-              </>
+              <StatusContent
+                status={status}
+                onClick={this.handleClick}
+                onTranslate={this.handleTranslate}
+                collapsible
+                onCollapsedToggle={this.handleCollapsedToggle}
+                {...statusContentProps}
+              />
             )}
+
+            {media}
+
+            {expanded && hashtagBar}
 
             <StatusActionBar scrollKey={scrollKey} status={status} account={account}  {...other} />
           </div>

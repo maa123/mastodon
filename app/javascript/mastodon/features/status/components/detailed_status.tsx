@@ -359,17 +359,16 @@ export const DetailedStatus: React.FC<{
           )}
 
         {expanded && (
-          <>
-            <StatusContent
-              status={status}
-              onTranslate={handleTranslate}
-              {...(statusContentProps as any)}
-            />
-
-            {media}
-            {hashtagBar}
-          </>
+          <StatusContent
+            status={status}
+            onTranslate={handleTranslate}
+            {...(statusContentProps as any)}
+          />
         )}
+
+        {media}
+
+        {expanded && hashtagBar}
 
         <div className='detailed-status__meta'>
           <div className='detailed-status__meta__line'>
