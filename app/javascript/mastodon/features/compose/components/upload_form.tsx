@@ -32,6 +32,7 @@ import {
   changeComposeSensitivity,
   changeMediaOrder,
 } from 'mastodon/actions/compose';
+import { CheckBox } from 'mastodon/components/check_box';
 import type { MediaAttachment } from 'mastodon/models/media_attachment';
 import { useAppSelector, useAppDispatch } from 'mastodon/store';
 
@@ -122,8 +123,12 @@ export const UploadForm: React.FC = () => {
   );
 
   const handleSensitiveChange = useCallback(() => {
+    if (spoiler) {
+      return;
+    }
+
     dispatch(changeComposeSensitivity());
-  }, [dispatch]);
+  }, [dispatch, spoiler]);
 
   const accessibility: {
     screenReaderInstructions: ScreenReaderInstructions;
@@ -197,16 +202,19 @@ export const UploadForm: React.FC = () => {
       )}
 
       {mediaIds.size > 0 && (
-        <div className='compose-form__sensitive-button'>
-          <label className={classNames({ active: sensitive, disabled: spoiler })}>
-            <input
-              type='checkbox'
-              checked={sensitive}
-              onChange={handleSensitiveChange}
-              disabled={spoiler}
-            />
-            メディアを閲覧注意にする
-          </label>
+        <div
+          className={classNames('compose-form__sensitive-button', {
+            disabled: spoiler,
+          })}
+        >
+          <CheckBox
+            name='mark-sensitive'
+            value='1'
+            checked={sensitive}
+            indeterminate={false}
+            onChange={handleSensitiveChange}
+            label='メディアを閲覧注意にする'
+          />
         </div>
       )}
     </>
