@@ -28,6 +28,7 @@ export const NotificationWithStatus: React.FC<{
   count: number;
   labelRenderer: LabelRenderer;
   unread: boolean;
+  overlayAccountId?: string;
 }> = ({
   icon,
   iconId,
@@ -37,8 +38,13 @@ export const NotificationWithStatus: React.FC<{
   labelRenderer,
   type,
   unread,
+  overlayAccountId,
 }) => {
   const dispatch = useAppDispatch();
+
+  const overlayAccount = useAppSelector((state) =>
+    overlayAccountId ? state.accounts.get(overlayAccountId) : undefined,
+  );
 
   const label = useMemo(
     () => labelRenderer(<DisplayedName accountIds={accountIds} />, count),
@@ -105,6 +111,7 @@ export const NotificationWithStatus: React.FC<{
         <Status
           // @ts-expect-error -- <Status> is not yet typed
           id={statusId}
+          account={overlayAccount}
           contextType='notifications'
           withDismiss
           skipPrepend
