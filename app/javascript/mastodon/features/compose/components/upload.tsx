@@ -36,7 +36,7 @@ export const Upload: React.FC<{
         | undefined,
   );
   const sensitive = useAppSelector(
-    (state) => state.compose.get('spoiler') as boolean, // eslint-disable-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+    (state) => state.compose.get('sensitive') as boolean, // eslint-disable-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
   );
 
   const handleUndoClick = useCallback(() => {

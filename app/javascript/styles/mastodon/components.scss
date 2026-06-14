@@ -657,6 +657,19 @@ body > [data-popper-placement] {
     aspect-ratio: 3/2;
   }
 
+  &__sensitive-button {
+    padding: 0 12px 8px;
+
+    .check-box {
+      white-space: normal;
+    }
+
+    &.disabled {
+      opacity: 0.5;
+      pointer-events: none;
+    }
+  }
+
   .media-gallery {
     gap: 8px;
   }

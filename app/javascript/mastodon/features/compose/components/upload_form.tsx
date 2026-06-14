@@ -2,6 +2,8 @@ import { useState, useCallback, useMemo } from 'react';
 
 import { useIntl, defineMessages } from 'react-intl';
 
+import classNames from 'classnames';
+
 import type { List } from 'immutable';
 
 import type {
@@ -26,7 +28,11 @@ import {
   rectSortingStrategy,
 } from '@dnd-kit/sortable';
 
-import { changeMediaOrder } from 'mastodon/actions/compose';
+import {
+  changeComposeSensitivity,
+  changeMediaOrder,
+} from 'mastodon/actions/compose';
+import { CheckBox } from 'mastodon/components/check_box';
 import type { MediaAttachment } from 'mastodon/models/media_attachment';
 import { useAppSelector, useAppDispatch } from 'mastodon/store';
 
@@ -76,6 +82,12 @@ export const UploadForm: React.FC = () => {
   const isProcessing = useAppSelector(
     (state) => state.compose.get('is_processing') as boolean, // eslint-disable-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
   );
+  const sensitive = useAppSelector(
+    (state) => state.compose.get('sensitive') as boolean, // eslint-disable-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+  );
+  const spoiler = useAppSelector(
+    (state) => state.compose.get('spoiler') as boolean, // eslint-disable-line @typescript-eslint/no-unsafe-call, @typescript-eslint/no-unsafe-member-access
+  );
   const [activeId, setActiveId] = useState<UniqueIdentifier | null>(null);
   const sensors = useSensors(
     useSensor(PointerSensor, {
@@ -109,6 +121,14 @@ export const UploadForm: React.FC = () => {
     },
     [dispatch, setActiveId],
   );
+
+  const handleSensitiveChange = useCallback(() => {
+    if (spoiler) {
+      return;
+    }
+
+    dispatch(changeComposeSensitivity());
+  }, [dispatch, spoiler]);
 
   const accessibility: {
     screenReaderInstructions: ScreenReaderInstructions;
@@ -178,6 +198,23 @@ export const UploadForm: React.FC = () => {
               {activeId ? <Upload id={activeId as string} overlay /> : null}
             </DragOverlay>
           </DndContext>
+        </div>
+      )}
+
+      {mediaIds.size > 0 && (
+        <div
+          className={classNames('compose-form__sensitive-button', {
+            disabled: spoiler,
+          })}
+        >
+          <CheckBox
+            name='mark-sensitive'
+            value='1'
+            checked={sensitive}
+            indeterminate={false}
+            onChange={handleSensitiveChange}
+            label='メディアを閲覧注意にする'
+          />
         </div>
       )}
     </>
