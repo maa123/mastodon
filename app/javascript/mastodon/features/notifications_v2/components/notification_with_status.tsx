@@ -29,6 +29,7 @@ export const NotificationWithStatus: React.FC<{
   labelRenderer: LabelRenderer;
   unread: boolean;
   overlayAccountId?: string;
+  muted?: boolean;
 }> = ({
   icon,
   iconId,
@@ -39,6 +40,7 @@ export const NotificationWithStatus: React.FC<{
   type,
   unread,
   overlayAccountId,
+  muted,
 }) => {
   const dispatch = useAppDispatch();
 
@@ -112,6 +114,7 @@ export const NotificationWithStatus: React.FC<{
           // @ts-expect-error -- <Status> is not yet typed
           id={statusId}
           account={overlayAccount}
+          muted={muted}
           contextType='notifications'
           withDismiss
           skipPrepend

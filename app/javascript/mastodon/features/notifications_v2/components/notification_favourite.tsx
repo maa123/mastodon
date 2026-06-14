@@ -46,5 +46,6 @@ export const NotificationFavourite: React.FC<{
     labelRenderer={labelRenderer}
     unread={unread}
     overlayAccountId={notification.sampleAccountIds[0]}
+    muted
   />
 );
