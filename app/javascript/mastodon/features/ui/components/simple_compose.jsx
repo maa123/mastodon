@@ -40,39 +40,39 @@ export const PublishLink = ({ className, children }) => {
   const timer = useRef(null);
   const longPressed = useRef(false);
 
-  const clear = () => {
+  function clear() {
     if (timer.current) {
       clearTimeout(timer.current);
       timer.current = null;
     }
-  };
+  }
 
-  const handleTouchStart = () => {
+  function handleTouchStart() {
     longPressed.current = false;
     timer.current = setTimeout(() => {
       longPressed.current = true;
       open();
       navigator.vibrate?.(10);
     }, LONG_PRESS_MS);
-  };
+  }
 
-  const handleTouchEnd = (e) => {
+  function handleTouchEnd(e) {
     clear();
     if (longPressed.current) {
       e.preventDefault();
     }
-  };
+  }
 
-  const handleClick = (e) => {
+  function handleClick(e) {
     if (longPressed.current) {
       e.preventDefault();
       longPressed.current = false;
     }
-  };
+  }
 
-  const handleContextMenu = (e) => {
+  function handleContextMenu(e) {
     if (longPressed.current) e.preventDefault();
-  };
+  }
 
   return (
     <Link
@@ -129,20 +129,22 @@ const Bar = ({ onClose }) => {
     }
   }, [isSubmitting, composeText, onClose]);
 
-  const cyclePrivacy = () => {
+  function cyclePrivacy() {
     const i = VIS.indexOf(privacy);
     const next = VIS[(i + 1) % VIS.length];
     dispatch(changeComposeVisibility(next));
-  };
+  }
 
-  const handleSubmit = () => {
+  function handleSubmit() {
     if (!text.trim() || isSubmitting) return;
     submitted.current = true;
     dispatch(changeCompose(text));
     dispatch(submitCompose());
-  };
+  }
 
-  const handleChange = (e) => setText(e.target.value);
+  function handleChange(e) {
+    setText(e.target.value);
+  }
 
   const PrivacyIcon = VIS_ICON[privacy] ?? PublicIcon;
 
