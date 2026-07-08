@@ -40,39 +40,39 @@ export const PublishLink = ({ className, children }) => {
   const timer = useRef(null);
   const longPressed = useRef(false);
 
-  function clear() {
+  const clear = useCallback(() => {
     if (timer.current) {
       clearTimeout(timer.current);
       timer.current = null;
     }
-  }
+  }, []);
 
-  function handleTouchStart() {
+  const handleTouchStart = useCallback(() => {
     longPressed.current = false;
     timer.current = setTimeout(() => {
       longPressed.current = true;
       open();
       navigator.vibrate?.(10);
     }, LONG_PRESS_MS);
-  }
+  }, [open]);
 
-  function handleTouchEnd(e) {
+  const handleTouchEnd = useCallback((e) => {
     clear();
     if (longPressed.current) {
       e.preventDefault();
     }
-  }
+  }, [clear]);
 
-  function handleClick(e) {
+  const handleClick = useCallback((e) => {
     if (longPressed.current) {
       e.preventDefault();
       longPressed.current = false;
     }
-  }
+  }, []);
 
-  function handleContextMenu(e) {
+  const handleContextMenu = useCallback((e) => {
     if (longPressed.current) e.preventDefault();
-  }
+  }, []);
 
   return (
     <Link
@@ -129,22 +129,22 @@ const Bar = ({ onClose }) => {
     }
   }, [isSubmitting, composeText, onClose]);
 
-  function cyclePrivacy() {
+  const cyclePrivacy = useCallback(() => {
     const i = VIS.indexOf(privacy);
     const next = VIS[(i + 1) % VIS.length];
     dispatch(changeComposeVisibility(next));
-  }
+  }, [privacy, dispatch]);
 
-  function handleSubmit() {
+  const handleSubmit = useCallback(() => {
     if (!text.trim() || isSubmitting) return;
     submitted.current = true;
     dispatch(changeCompose(text));
     dispatch(submitCompose());
-  }
+  }, [text, isSubmitting, dispatch]);
 
-  function handleChange(e) {
+  const handleChange = useCallback((e) => {
     setText(e.target.value);
-  }
+  }, []);
 
   const PrivacyIcon = VIS_ICON[privacy] ?? PublicIcon;
 
