@@ -1,3 +1,4 @@
+import PropTypes from 'prop-types';
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 import { defineMessages, useIntl } from 'react-intl';
@@ -69,6 +70,10 @@ export const PublishLink = ({ className, children }) => {
     }
   };
 
+  const handleContextMenu = (e) => {
+    if (longPressed.current) e.preventDefault();
+  };
+
   return (
     <Link
       to='/publish'
@@ -77,13 +82,16 @@ export const PublishLink = ({ className, children }) => {
       onTouchEnd={handleTouchEnd}
       onTouchMove={clear}
       onClick={handleClick}
-      onContextMenu={(e) => {
-        if (longPressed.current) e.preventDefault();
-      }}
+      onContextMenu={handleContextMenu}
     >
       {children}
     </Link>
   );
+};
+
+PublishLink.propTypes = {
+  className: PropTypes.string,
+  children: PropTypes.node,
 };
 
 const Bar = ({ onClose }) => {
@@ -134,6 +142,8 @@ const Bar = ({ onClose }) => {
     dispatch(submitCompose());
   };
 
+  const handleChange = (e) => setText(e.target.value);
+
   const PrivacyIcon = VIS_ICON[privacy] ?? PublicIcon;
 
   return (
@@ -153,7 +163,7 @@ const Bar = ({ onClose }) => {
           ref={inputRef}
           className='simple-compose__input'
           value={text}
-          onChange={(e) => setText(e.target.value)}
+          onChange={handleChange}
           placeholder={intl.formatMessage(messages.placeholder)}
           rows={1}
           autoFocus
@@ -171,6 +181,10 @@ const Bar = ({ onClose }) => {
       </div>
     </>
   );
+};
+
+Bar.propTypes = {
+  onClose: PropTypes.func.isRequired,
 };
 
 export const SimpleComposeShell = ({ children }) => {
@@ -192,4 +206,8 @@ export const SimpleComposeShell = ({ children }) => {
       {layout === 'mobile' && open && <Bar onClose={closeBar} />}
     </Ctx.Provider>
   );
+};
+
+SimpleComposeShell.propTypes = {
+  children: PropTypes.node,
 };
