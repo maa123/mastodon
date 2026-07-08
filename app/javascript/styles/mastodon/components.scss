@@ -3530,7 +3530,7 @@ $ui-header-logo-wordmark-width: 99px;
   right: 0;
   z-index: 2000;
   display: flex;
-  align-items: center;
+  align-items: flex-end;
   gap: 8px;
   padding: 8px 12px;
   padding-bottom: max(8px, env(safe-area-inset-bottom));
@@ -3547,12 +3547,17 @@ $ui-header-logo-wordmark-width: 99px;
   &__input {
     flex: 1;
     min-width: 0;
-    height: 36px;
+    min-height: 36px;
+    max-height: 120px;
+    height: auto;
+    resize: none;
     border: 0;
     background: transparent;
     color: $primary-text-color;
     font-size: 15px;
     line-height: 20px;
+    padding: 8px 0;
+    overflow-y: auto;
 
     &::placeholder {
       color: $dark-text-color;
@@ -3572,6 +3577,7 @@ $ui-header-logo-wordmark-width: 99px;
     background: transparent;
     border: 0;
     padding: 4px;
+    margin-bottom: 4px;
     color: $highlight-text-color;
     cursor: pointer;
 

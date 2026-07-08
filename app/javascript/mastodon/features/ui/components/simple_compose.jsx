@@ -94,6 +94,14 @@ const Bar = ({ onClose }) => {
   const composeText = useAppSelector((s) => s.getIn(['compose', 'text']));
   const [text, setText] = useState('');
   const submitted = useRef(false);
+  const inputRef = useRef(null);
+
+  useEffect(() => {
+    const el = inputRef.current;
+    if (!el) return;
+    el.style.height = 'auto';
+    el.style.height = `${Math.min(el.scrollHeight, 120)}px`;
+  }, [text]);
 
   useEffect(() => {
     const onKeyUp = (e) => {
@@ -141,17 +149,13 @@ const Bar = ({ onClose }) => {
         >
           <Icon id='privacy' icon={PrivacyIcon} />
         </button>
-        <input
+        <textarea
+          ref={inputRef}
           className='simple-compose__input'
           value={text}
           onChange={(e) => setText(e.target.value)}
-          onKeyDown={(e) => {
-            if (e.key === 'Enter') {
-              e.preventDefault();
-              handleSubmit();
-            }
-          }}
           placeholder={intl.formatMessage(messages.placeholder)}
+          rows={1}
           autoFocus
         />
         <button
