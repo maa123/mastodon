@@ -3523,6 +3523,11 @@ $ui-header-logo-wordmark-width: 99px;
   }
 }
 
+.simple-compose__publish-link {
+  -webkit-touch-callout: none;
+  user-select: none;
+}
+
 .simple-compose {
   position: fixed;
   bottom: 0;

@@ -1,3 +1,4 @@
+import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 
@@ -35,6 +36,7 @@ export const PublishLink = ({ className, children }) => {
   const { toggle } = useContext(Ctx);
   const timer = useRef(null);
   const longPressed = useRef(false);
+  const touching = useRef(false);
 
   const clear = useCallback(() => {
     if (timer.current) {
@@ -43,7 +45,16 @@ export const PublishLink = ({ className, children }) => {
     }
   }, []);
 
+  const endTouch = useCallback(() => {
+    clear();
+    // contextmenu can fire slightly after touchend on some browsers
+    setTimeout(() => {
+      touching.current = false;
+    }, 300);
+  }, [clear]);
+
   const handleTouchStart = useCallback(() => {
+    touching.current = true;
     longPressed.current = false;
     timer.current = setTimeout(() => {
       longPressed.current = true;
@@ -53,11 +64,11 @@ export const PublishLink = ({ className, children }) => {
   }, [toggle]);
 
   const handleTouchEnd = useCallback((e) => {
-    clear();
+    endTouch();
     if (longPressed.current) {
       e.preventDefault();
     }
-  }, [clear]);
+  }, [endTouch]);
 
   const handleClick = useCallback((e) => {
     if (longPressed.current) {
@@ -67,15 +78,18 @@ export const PublishLink = ({ className, children }) => {
   }, []);
 
   const handleContextMenu = useCallback((e) => {
-    if (longPressed.current) e.preventDefault();
+    if (touching.current || longPressed.current) {
+      e.preventDefault();
+    }
   }, []);
 
   return (
     <Link
       to='/publish'
-      className={className}
+      className={classNames('simple-compose__publish-link', className)}
       onTouchStart={handleTouchStart}
       onTouchEnd={handleTouchEnd}
+      onTouchCancel={endTouch}
       onTouchMove={clear}
       onClick={handleClick}
       onContextMenu={handleContextMenu}
