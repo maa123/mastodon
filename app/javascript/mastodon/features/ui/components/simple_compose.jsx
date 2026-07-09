@@ -6,37 +6,33 @@ import { defineMessages, useIntl } from 'react-intl';
 import { Link } from 'react-router-dom';
 
 import ArrowRightAltFillIcon from '@/material-icons/400-24px/arrow_right_alt-fill.svg?react';
-import LockIcon from '@/material-icons/400-24px/lock.svg?react';
-import PublicIcon from '@/material-icons/400-24px/public.svg?react';
-import QuietTimeIcon from '@/material-icons/400-24px/quiet_time.svg?react';
+import CloseIcon from '@/material-icons/400-24px/close.svg?react';
+import SettingsIcon from '@/material-icons/400-24px/settings.svg?react';
 import {
   changeCompose,
-  changeComposeVisibility,
   resetCompose,
   submitCompose,
 } from 'mastodon/actions/compose';
+import { CheckBox } from 'mastodon/components/check_box';
 import { Icon } from 'mastodon/components/icon';
+import { IconButton } from 'mastodon/components/icon_button';
 import { useAppDispatch, useAppSelector } from 'mastodon/store';
 
 const LONG_PRESS_MS = 500;
 
 const Ctx = createContext(null);
 
-const VIS = ['public', 'unlisted', 'private'];
-const VIS_ICON = {
-  public: PublicIcon,
-  unlisted: QuietTimeIcon,
-  private: LockIcon,
-};
-
 const messages = defineMessages({
   placeholder: { id: 'compose_form.placeholder', defaultMessage: 'What is on your mind?' },
   publish: { id: 'compose_form.publish', defaultMessage: 'Post' },
-  changePrivacy: { id: 'privacy.change', defaultMessage: 'Change post privacy' },
+  settings: { id: 'simple_compose.settings', defaultMessage: '簡易投稿の設定' },
+  settingsTitle: { id: 'simple_compose.settings_title', defaultMessage: '設定' },
+  autoClose: { id: 'simple_compose.auto_close', defaultMessage: '投稿後に閉じる' },
+  close: { id: 'lightbox.close', defaultMessage: 'Close' },
 });
 
 export const PublishLink = ({ className, children }) => {
-  const { open } = useContext(Ctx);
+  const { toggle } = useContext(Ctx);
   const timer = useRef(null);
   const longPressed = useRef(false);
 
@@ -51,10 +47,10 @@ export const PublishLink = ({ className, children }) => {
     longPressed.current = false;
     timer.current = setTimeout(() => {
       longPressed.current = true;
-      open();
+      toggle();
       navigator.vibrate?.(10);
     }, LONG_PRESS_MS);
-  }, [open]);
+  }, [toggle]);
 
   const handleTouchEnd = useCallback((e) => {
     clear();
@@ -94,13 +90,51 @@ PublishLink.propTypes = {
   children: PropTypes.node,
 };
 
+const SettingsModal = ({ autoClose, onAutoCloseChange, onClose }) => {
+  const intl = useIntl();
+
+  return (
+    <div className='simple-compose__settings-modal'>
+      <div className='simple-compose__settings-modal__overlay' onClick={onClose} role='presentation' />
+      <div className='simple-compose__settings-modal__panel' role='dialog' aria-modal='true' aria-labelledby='simple-compose-settings-title'>
+        <div className='simple-compose__settings-modal__header'>
+          <h2 id='simple-compose-settings-title' className='simple-compose__settings-modal__title'>
+            {intl.formatMessage(messages.settingsTitle)}
+          </h2>
+          <IconButton
+            title={intl.formatMessage(messages.close)}
+            icon='times'
+            iconComponent={CloseIcon}
+            onClick={onClose}
+            size={20}
+          />
+        </div>
+        <div className='simple-compose__settings-modal__body'>
+          <CheckBox
+            label={intl.formatMessage(messages.autoClose)}
+            checked={autoClose}
+            onChange={onAutoCloseChange}
+          />
+        </div>
+      </div>
+    </div>
+  );
+};
+
+SettingsModal.propTypes = {
+  autoClose: PropTypes.bool.isRequired,
+  onAutoCloseChange: PropTypes.func.isRequired,
+  onClose: PropTypes.func.isRequired,
+};
+
 const Bar = ({ onClose }) => {
   const intl = useIntl();
   const dispatch = useAppDispatch();
-  const privacy = useAppSelector((s) => s.getIn(['compose', 'privacy'], 'public'));
   const isSubmitting = useAppSelector((s) => s.getIn(['compose', 'is_submitting']));
   const composeText = useAppSelector((s) => s.getIn(['compose', 'text']));
   const [text, setText] = useState('');
+  const [autoClose, setAutoClose] = useState(true);
+  const [settingsOpen, setSettingsOpen] = useState(false);
   const submitted = useRef(false);
   const inputRef = useRef(null);
 
@@ -113,27 +147,40 @@ const Bar = ({ onClose }) => {
 
   useEffect(() => {
     const onKeyUp = (e) => {
-      if (e.key === 'Escape') onClose();
+      if (e.key !== 'Escape') return;
+      if (settingsOpen) {
+        setSettingsOpen(false);
+      } else {
+        onClose();
+      }
     };
     window.addEventListener('keyup', onKeyUp);
     return () => window.removeEventListener('keyup', onKeyUp);
-  }, [onClose]);
+  }, [onClose, settingsOpen]);
 
   useEffect(() => {
     if (submitted.current && !isSubmitting && !composeText) {
       submitted.current = false;
       setText('');
-      onClose();
+      if (autoClose) {
+        onClose();
+      }
     } else if (submitted.current && !isSubmitting) {
       submitted.current = false;
     }
-  }, [isSubmitting, composeText, onClose]);
+  }, [isSubmitting, composeText, onClose, autoClose]);
 
-  const cyclePrivacy = useCallback(() => {
-    const i = VIS.indexOf(privacy);
-    const next = VIS[(i + 1) % VIS.length];
-    dispatch(changeComposeVisibility(next));
-  }, [privacy, dispatch]);
+  const openSettings = useCallback(() => {
+    setSettingsOpen(true);
+  }, []);
+
+  const closeSettings = useCallback(() => {
+    setSettingsOpen(false);
+  }, []);
+
+  const handleAutoCloseChange = useCallback(({ target }) => {
+    setAutoClose(target.checked);
+  }, []);
 
   const handleSubmit = useCallback(() => {
     if (!text.trim() || isSubmitting) return;
@@ -146,20 +193,17 @@ const Bar = ({ onClose }) => {
     setText(e.target.value);
   }, []);
 
-  const PrivacyIcon = VIS_ICON[privacy] ?? PublicIcon;
-
   return (
     <>
-      <div className='simple-compose__backdrop' onClick={onClose} role='presentation' />
       <div className='simple-compose'>
         <button
           type='button'
-          className='simple-compose__privacy'
-          onClick={cyclePrivacy}
-          title={intl.formatMessage(messages.changePrivacy)}
-          aria-label={intl.formatMessage(messages.changePrivacy)}
+          className='simple-compose__settings'
+          onClick={openSettings}
+          title={intl.formatMessage(messages.settings)}
+          aria-label={intl.formatMessage(messages.settings)}
         >
-          <Icon id='privacy' icon={PrivacyIcon} />
+          <Icon id='settings' icon={SettingsIcon} />
         </button>
         <textarea
           ref={inputRef}
@@ -181,6 +225,13 @@ const Bar = ({ onClose }) => {
           <Icon id='send' icon={ArrowRightAltFillIcon} />
         </button>
       </div>
+      {settingsOpen && (
+        <SettingsModal
+          autoClose={autoClose}
+          onAutoCloseChange={handleAutoCloseChange}
+          onClose={closeSettings}
+        />
+      )}
     </>
   );
 };
@@ -194,16 +245,19 @@ export const SimpleComposeShell = ({ children }) => {
   const dispatch = useAppDispatch();
   const [open, setOpen] = useState(false);
 
-  const openBar = useCallback(() => {
+  const toggleBar = useCallback(() => {
     if (layout !== 'mobile') return;
-    dispatch(resetCompose());
-    setOpen(true);
+    setOpen((prev) => {
+      if (prev) return false;
+      dispatch(resetCompose());
+      return true;
+    });
   }, [layout, dispatch]);
 
   const closeBar = useCallback(() => setOpen(false), []);
 
   return (
-    <Ctx.Provider value={{ open: openBar }}>
+    <Ctx.Provider value={{ toggle: toggleBar }}>
       {children}
       {layout === 'mobile' && open && <Bar onClose={closeBar} />}
     </Ctx.Provider>

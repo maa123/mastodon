@@ -3537,13 +3537,6 @@ $ui-header-logo-wordmark-width: 99px;
   background: var(--background-color);
   border-top: 1px solid var(--background-border-color);
 
-  &__backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 1999;
-    background: rgba($base-overlay-background, 0.3);
-  }
-
   &__input {
     flex: 1;
     min-width: 0;
@@ -3568,7 +3561,7 @@ $ui-header-logo-wordmark-width: 99px;
     }
   }
 
-  &__privacy,
+  &__settings,
   &__submit {
     flex-shrink: 0;
     display: flex;
@@ -3589,6 +3582,51 @@ $ui-header-logo-wordmark-width: 99px;
     .icon {
       width: 22px;
       height: 22px;
+    }
+  }
+
+  &__settings-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 2100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+
+    &__overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba($base-overlay-background, 0.5);
+    }
+
+    &__panel {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 360px;
+      background: var(--modal-background-color);
+      border: 1px solid var(--modal-border-color);
+      border-radius: 16px;
+    }
+
+    &__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--modal-border-color);
+    }
+
+    &__title {
+      margin: 0;
+      font-size: 16px;
+      line-height: 24px;
+      font-weight: 500;
+    }
+
+    &__body {
+      padding: 16px;
     }
   }
 }
