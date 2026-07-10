@@ -1,8 +1,9 @@
-import classNames from 'classnames';
 import PropTypes from 'prop-types';
 import { createContext, useCallback, useContext, useEffect, useRef, useState } from 'react';
 
 import { defineMessages, useIntl } from 'react-intl';
+
+import classNames from 'classnames';
 
 import { Link } from 'react-router-dom';
 
