@@ -4,7 +4,6 @@ import { createContext, useCallback, useContext, useEffect, useRef, useState } f
 import { defineMessages, useIntl } from 'react-intl';
 
 import classNames from 'classnames';
-
 import { Link } from 'react-router-dom';
 
 import ArrowRightAltFillIcon from '@/material-icons/400-24px/arrow_right_alt-fill.svg?react';
