@@ -3523,6 +3523,119 @@ $ui-header-logo-wordmark-width: 99px;
   }
 }
 
+.simple-compose__publish-link {
+  -webkit-touch-callout: none;
+  user-select: none;
+}
+
+.simple-compose {
+  position: fixed;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  z-index: 2000;
+  display: flex;
+  align-items: flex-end;
+  gap: 8px;
+  padding: 8px 12px;
+  padding-bottom: max(8px, env(safe-area-inset-bottom));
+  background: var(--background-color);
+  border-top: 1px solid var(--background-border-color);
+
+  &__input {
+    flex: 1;
+    min-width: 0;
+    min-height: 36px;
+    max-height: 120px;
+    height: auto;
+    resize: none;
+    border: 0;
+    background: transparent;
+    color: $primary-text-color;
+    font-size: 15px;
+    line-height: 20px;
+    padding: 8px 0;
+    overflow-y: auto;
+
+    &::placeholder {
+      color: $dark-text-color;
+    }
+
+    &:focus {
+      outline: none;
+    }
+  }
+
+  &__settings,
+  &__submit {
+    flex-shrink: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 0;
+    padding: 4px;
+    margin-bottom: 4px;
+    color: $highlight-text-color;
+    cursor: pointer;
+
+    &:disabled {
+      opacity: 0.5;
+      cursor: default;
+    }
+
+    .icon {
+      width: 22px;
+      height: 22px;
+    }
+  }
+
+  &__settings-modal {
+    position: fixed;
+    inset: 0;
+    z-index: 2100;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    padding: 16px;
+
+    &__overlay {
+      position: absolute;
+      inset: 0;
+      background: rgba($base-overlay-background, 0.5);
+    }
+
+    &__panel {
+      position: relative;
+      z-index: 1;
+      width: 100%;
+      max-width: 360px;
+      background: var(--modal-background-color);
+      border: 1px solid var(--modal-border-color);
+      border-radius: 16px;
+    }
+
+    &__header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      padding: 12px 16px;
+      border-bottom: 1px solid var(--modal-border-color);
+    }
+
+    &__title {
+      margin: 0;
+      font-size: 16px;
+      line-height: 24px;
+      font-weight: 500;
+    }
+
+    &__body {
+      padding: 16px;
+    }
+  }
+}
+
 .navigation-panel {
   margin-top: 10px;
   margin-bottom: 10px;

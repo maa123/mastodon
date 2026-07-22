@@ -16,6 +16,8 @@ import { WordmarkLogo, SymbolLogo } from 'mastodon/components/logo';
 import { identityContextPropShape, withIdentity } from 'mastodon/identity_context';
 import { registrationsOpen, me, sso_redirect } from 'mastodon/initial_state';
 
+import { PublishLink, SimpleComposeShell } from './simple_compose';
+
 const Account = connect(state => ({
   account: state.getIn(['accounts', me]),
 }))(({ account }) => (
@@ -66,7 +68,7 @@ class Header extends PureComponent {
       content = (
         <>
           {location.pathname !== '/search' && <Link to='/search' className='button button-secondary' aria-label={intl.formatMessage(messages.search)}><Icon id='search' icon={SearchIcon} /></Link>}
-          {location.pathname !== '/publish' && <Link to='/publish' className='button button-secondary'><FormattedMessage id='compose_form.publish_form' defaultMessage='New post' /></Link>}
+          {location.pathname !== '/publish' && <PublishLink className='button button-secondary'><FormattedMessage id='compose_form.publish_form' defaultMessage='New post' /></PublishLink>}
           <Account />
         </>
       );
@@ -103,16 +105,18 @@ class Header extends PureComponent {
     }
 
     return (
-      <div className='ui__header'>
-        <Link to='/' className='ui__header__logo'>
-          <WordmarkLogo />
-          <SymbolLogo />
-        </Link>
+      <SimpleComposeShell>
+        <div className='ui__header'>
+          <Link to='/' className='ui__header__logo'>
+            <WordmarkLogo />
+            <SymbolLogo />
+          </Link>
 
-        <div className='ui__header__links'>
-          {content}
+          <div className='ui__header__links'>
+            {content}
+          </div>
         </div>
-      </div>
+      </SimpleComposeShell>
     );
   }
 
