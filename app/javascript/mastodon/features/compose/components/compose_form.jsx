@@ -323,7 +323,7 @@ class ComposeForm extends ImmutablePureComponent {
                   disabled={!this.canSubmit()}
                 />
               </div>
-              <div className='compose-form__submit'>
+              <div className='compose-form__zw-copy'>
                 <Button text='ゼロ幅' onClick={this.handleZWCopy} block />
               </div>
             </div>
