@@ -256,6 +256,33 @@ RSpec.describe User do
     end
   end
 
+  describe 'email reconfirmation' do
+    it 'does not confirm an email written by a concurrent request' do
+      attacker_email = 'attacker@example.com'
+      victim_email   = 'victim@example.com'
+
+      user = Fabricate(:user)
+
+      user.update!(email: attacker_email)
+
+      stale_user = described_class.find(user.id)
+
+      described_class.where(id: user.id).update_all(
+        unconfirmed_email: victim_email,
+        confirmation_token: 'different-token'
+      )
+      stale_user.update!(email: attacker_email)
+      confirmation_token = stale_user.raw_confirmation_token
+
+      expect(described_class.find(user.id).unconfirmed_email).to eq(attacker_email)
+
+      confirmed_user = described_class.confirm_by_token(confirmation_token)
+
+      expect(confirmed_user.errors).to be_empty
+      expect(confirmed_user.reload.email).to eq(attacker_email)
+    end
+  end
+
   describe '#approve!' do
     subject { user.approve! }
 

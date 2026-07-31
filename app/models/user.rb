@@ -384,6 +384,12 @@ class User < ApplicationRecord
 
   protected
 
+  # Temporary patch for CVE-2026-32700.
+  def postpone_email_change_until_confirmation_and_regenerate_confirmation_token
+    unconfirmed_email_will_change!
+    super
+  end
+
   def send_devise_notification(notification, *args, **kwargs)
     # This method can be called in `after_update` and `after_commit` hooks,
     # but we must make sure the mailer is actually called *after* commit,
