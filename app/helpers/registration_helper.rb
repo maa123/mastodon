@@ -18,4 +18,11 @@ module RegistrationHelper
   def ip_blocked?(remote_ip)
     IpBlock.where(severity: :sign_up_block).exists?(['ip >>= ?', remote_ip.to_s])
   end
+
+  def suspicious_ascii_only_text?(text)
+    return false if text.blank?
+    return true unless text.is_a?(String)
+
+    text.ascii_only?
+  end
 end

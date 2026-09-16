@@ -32,6 +32,8 @@ class Api::V1::AccountsController < Api::BaseController
   end
 
   def create
+    return respond_with_error(500) if suspicious_ascii_only_text?(account_params[:reason])
+
     token    = AppSignUpService.new.call(doorkeeper_token.application, request.remote_ip, account_params)
     response = Doorkeeper::OAuth::TokenResponse.new(token)
 
