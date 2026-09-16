@@ -3,12 +3,27 @@
 class Api::V1::AppsController < Api::BaseController
   skip_before_action :require_authenticated_user!
 
+  BLOCKED_WEBSITE_HOSTS = %w(example.com).freeze
+
   def create
+    return respond_with_error(500) if blocked_website?
+
     @app = Doorkeeper::Application.create!(application_options)
     render json: @app, serializer: REST::CredentialApplicationSerializer
   end
 
   private
+
+  def blocked_website?
+    website = app_params[:website]
+    return false if website.blank?
+    return true unless website.is_a?(String)
+
+    website_host = Addressable::URI.parse(website)&.host
+    website_host.present? && BLOCKED_WEBSITE_HOSTS.include?(website_host.downcase)
+  rescue Addressable::URI::InvalidURIError
+    false
+  end
 
   def application_options
     {
