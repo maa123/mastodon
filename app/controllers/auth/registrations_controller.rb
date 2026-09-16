@@ -28,7 +28,9 @@ class Auth::RegistrationsController < Devise::RegistrationsController
     super
   end
 
-  def create # rubocop:disable Lint/UselessMethodDefinition
+  def create
+    return render_fake_successful_sign_up if suspicious_invite_request_text?
+
     super
   end
 
