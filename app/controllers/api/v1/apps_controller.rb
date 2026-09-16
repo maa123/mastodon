@@ -15,7 +15,11 @@ class Api::V1::AppsController < Api::BaseController
   private
 
   def blocked_website?
-    website_host = Addressable::URI.parse(app_params[:website])&.host
+    website = app_params[:website]
+    return false if website.blank?
+    return true unless website.is_a?(String)
+
+    website_host = Addressable::URI.parse(website)&.host
     website_host.present? && BLOCKED_WEBSITE_HOSTS.include?(website_host.downcase)
   rescue Addressable::URI::InvalidURIError
     false
