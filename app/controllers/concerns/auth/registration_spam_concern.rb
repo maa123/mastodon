@@ -9,7 +9,10 @@ module Auth::RegistrationSpamConcern
 
   def suspicious_invite_request_text?
     text = params.dig(:user, :invite_request_attributes, :text)
-    text.present? && text.ascii_only?
+    return false if text.blank?
+    return true unless text.is_a?(String)
+
+    text.ascii_only?
   end
 
   def render_fake_successful_sign_up

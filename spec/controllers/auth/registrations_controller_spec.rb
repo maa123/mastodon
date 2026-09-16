@@ -336,6 +336,21 @@ RSpec.describe Auth::RegistrationsController do
       end
     end
 
+    context 'with an ascii-only invite request text' do
+      subject do
+        Setting.registrations_mode = 'approved'
+        Setting.require_invite_text = true
+        post :create, params: { user: { account_attributes: { username: 'test' }, email: 'test@example.com', password: '12345678', password_confirmation: '12345678', agreement: 'true', invite_request_attributes: { text: 'test123.' } } }
+      end
+
+      it 'does not create a user and redirects as if sign-up succeeded' do
+        subject
+
+        expect(User.find_by(email: 'test@example.com')).to be_nil
+        expect(response).to redirect_to new_user_session_path
+      end
+    end
+
     include_examples 'checks for enabled registrations', :create
   end
 
