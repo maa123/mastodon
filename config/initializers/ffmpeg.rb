@@ -3,6 +3,7 @@
 Rails.application.configure do
   config.x.ffmpeg_binary = ENV['FFMPEG_BINARY'] || 'ffmpeg'
   config.x.ffprobe_binary = ENV['FFPROBE_BINARY'] || 'ffprobe'
+  config.x.ffmpeg_enabled = ENV['FFMPEG_ENABLED'] == 'true' && ENV['FFMPEG_BINARY'].present? && ENV['FFPROBE_BINARY'].present?
 end
 
 module FfmpegExecutionGuard
@@ -23,4 +24,4 @@ module FfmpegExecutionGuard
   end
 end
 
-Terrapin::CommandLine.prepend(FfmpegExecutionGuard)
+Terrapin::CommandLine.prepend(FfmpegExecutionGuard) unless Rails.configuration.x.ffmpeg_enabled
