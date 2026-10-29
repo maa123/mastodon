@@ -46,6 +46,39 @@ RSpec.describe FetchResourceService do
       it { is_expected.to be_nil }
     end
 
+    context 'when request is redirected' do
+      let(:url) { 'http://example.com/redirect' }
+      let(:target_url) { 'http://other.example.com/foo' }
+      let(:target_id) { url }
+
+      let(:json) do
+        {
+          id: target_id,
+          '@context': ActivityPub::TagManager::CONTEXT,
+          type: 'Note',
+        }.to_json
+      end
+
+      before do
+        stub_request(:get, url).to_return(status: 302, headers: { 'Location' => target_url })
+        stub_request(:get, target_url).to_return(status: 200, body: json, headers: { 'Content-Type' => 'application/activity+json' })
+      end
+
+      context 'when the redirect target claims the original URL as its ID' do
+        it 'does not accept the redirected document' do
+          expect(subject).to be_nil
+          expect(a_request(:get, url)).to have_been_made.twice
+          expect(a_request(:get, target_url)).to have_been_made.once
+        end
+      end
+
+      context 'when the redirect target has a matching ID' do
+        let(:target_id) { target_url }
+
+        it { is_expected.to eq [target_url, { prefetched_body: json }] }
+      end
+    end
+
     context 'when request succeeds' do
       let(:body) { '' }
 
