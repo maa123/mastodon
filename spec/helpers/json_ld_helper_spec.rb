@@ -96,12 +96,36 @@ RSpec.describe JsonLdHelper do
 
         expect(fetch_resource('https://mallory.test/', false)).to be_nil
       end
+
+      it 'follows redirects on the initial fetch and returns the resource fetched from the retrieved ID' do
+        stub_request(:get, 'https://bob.test/').to_return(status: 302, headers: { 'Location' => 'https://alice.test/' })
+        stub_request(:get, 'https://alice.test/').to_return(body: '{"id": "https://alice.test/"}', headers: { 'Content-Type': 'application/activity+json' })
+
+        expect(fetch_resource('https://bob.test/', false)).to eq({ 'id' => 'https://alice.test/' })
+      end
+
+      it 'returns nil if the fetch from the retrieved ID is redirected' do
+        stub_request(:get, 'https://bob.test/').to_return(body: '{"id": "https://alice.test/"}', headers: { 'Content-Type': 'application/activity+json' })
+        stub_request(:get, 'https://alice.test/').to_return(status: 302, headers: { 'Location' => 'https://mallory.test/' })
+        stub_request(:get, 'https://mallory.test/').to_return(body: '{"id": "https://alice.test/"}', headers: { 'Content-Type': 'application/activity+json' })
+
+        expect(fetch_resource('https://bob.test/', false)).to be_nil
+        expect(a_request(:get, 'https://mallory.test/')).to_not have_been_made
+      end
     end
 
     context 'when the second argument is true' do
       it 'returns nil if the retrieved ID and the given URI does not match' do
         stub_request(:get, 'https://mallory.test/').to_return(body: '{"id": "https://alice.test/"}', headers: { 'Content-Type': 'application/activity+json' })
         expect(fetch_resource('https://mallory.test/', true)).to be_nil
+      end
+
+      it 'returns nil if the request is redirected, even if the redirect target claims the given URI as its ID' do
+        stub_request(:get, 'https://alice.test/').to_return(status: 302, headers: { 'Location' => 'https://mallory.test/' })
+        stub_request(:get, 'https://mallory.test/').to_return(body: '{"id": "https://alice.test/"}', headers: { 'Content-Type': 'application/activity+json' })
+
+        expect(fetch_resource('https://alice.test/', true)).to be_nil
+        expect(a_request(:get, 'https://mallory.test/')).to_not have_been_made
       end
     end
   end
@@ -114,6 +138,12 @@ RSpec.describe JsonLdHelper do
 
     it 'returns hash' do
       stub_request(:get, 'https://host.test/').to_return(status: 200, body: '{}', headers: { 'Content-Type': 'application/activity+json' })
+      expect(fetch_resource_without_id_validation('https://host.test/')).to eq({})
+    end
+
+    it 'follows redirects by default' do
+      stub_request(:get, 'https://host.test/').to_return(status: 302, headers: { 'Location' => 'https://other.test/' })
+      stub_request(:get, 'https://other.test/').to_return(status: 200, body: '{}', headers: { 'Content-Type': 'application/activity+json' })
       expect(fetch_resource_without_id_validation('https://host.test/')).to eq({})
     end
   end

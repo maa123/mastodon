@@ -187,17 +187,18 @@ module JsonLdHelper
       uri = json['id']
     end
 
-    json = fetch_resource_without_id_validation(uri, on_behalf_of, request_options: request_options)
+    json = fetch_resource_without_id_validation(uri, on_behalf_of, allow_redirects: false, request_options: request_options)
     json.present? && json['id'] == uri ? json : nil
   end
 
-  def fetch_resource_without_id_validation(uri, on_behalf_of = nil, raise_on_temporary_error = false, request_options: {})
+  def fetch_resource_without_id_validation(uri, on_behalf_of = nil, raise_on_temporary_error = false, allow_redirects: true, request_options: {})
     on_behalf_of ||= Account.representative
+    request_options = request_options.merge(follow: false) unless allow_redirects
 
     build_request(uri, on_behalf_of, options: request_options).perform do |response|
       raise Mastodon::UnexpectedResponseError, response unless response_successful?(response) || response_error_unsalvageable?(response) || !raise_on_temporary_error
 
-      body_to_json(response.body_with_limit) if response.code == 200 && valid_activitypub_content_type?(response)
+      body_to_json(response.body_with_limit) if response.code == 200 && valid_activitypub_content_type?(response) && (allow_redirects || response.uri.to_s == uri)
     end
   end
 
